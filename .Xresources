@@ -1,0 +1,31 @@
+urxvt.foreground: #aaaaaa
+urxvt.background: #000000
+
+urxvt.color0: #000000
+urxvt.color1: #9e1828
+urxvt.color2: #c5f779
+urxvt.color3: #968a38
+urxvt.color4: #414171
+urxvt.color5: #963c59
+urxvt.color6: #418179
+urxvt.color7: gray
+urxvt.color8: gray40
+urxvt.color9: #cf6171
+urxvt.color10: #c5f779
+urxvt.color11: #fff796
+urxvt.color12: #4186be
+urxvt.color13: #cf9ebe
+urxvt.color14: #71bebe
+urxvt.color15: #ffffff
+
+urxvt.scrollBar: false
+urxvt.saveLines: 1500
+urxvt.urlLauncher: x-www-browser
+
+
+urxvt.font: -*-terminus-*-*-*-*-*-*-*-*-*-*-*-*
+urxvt.boldFont: -*-terminus-*-*-*-*-*-*-*-*-*-*-*-*
+urxvt.modifier: alt
+urxvt.keysym.M-u: perl:mark-yank-urls:activate_mark_mode
+urxvt.underlineURLs: true
+urxvt.perl-ext: selection,mark-yank-urls
