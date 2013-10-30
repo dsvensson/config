@@ -369,4 +369,3 @@
 
 (global-set-key "\M-p" 'move-line-up)
 (global-set-key "\M-n" 'move-line-down)
-(put 'downcase-region 'disabled nil)
