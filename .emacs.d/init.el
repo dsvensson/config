@@ -89,9 +89,6 @@
   (set-face-background 'whitespace-tab "#353535")
   (set-face-background 'whitespace-trailing "#ff0000"))
 
-;; automatically nuke all trailing whitespaces
-(add-hook 'before-save-hook 'delete-trailing-whitespace)
-
 ;; set default tab width
 (setq tab-width 4)
 (setq-default tab-width 4)
@@ -221,6 +218,9 @@
 
 ;; smart tabs
 (require 'smarttabs)
+
+;; automatically nuke all trailing whitespaces
+(add-hook 'before-save-hook 'delete-trailing-whitespace)
 
 ;; flyspell comments
 (add-hook 'c-mode-hook 'flyspell-prog-mode)
