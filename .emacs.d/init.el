@@ -35,15 +35,9 @@
 (blink-cursor-mode nil)
 
 ;; color theme
-(cond
- ((>= emacs-major-version 24)
-  (progn
-    (add-to-list 'custom-theme-load-path "~/.emacs.d/themes")
-    (load-theme 'zenburn t)))
- ((>= emacs-major-version 23)
-  (progn
-    (require 'color-theme-zenburn)
-    (color-theme-zenburn))))
+(when (>= emacs-major-version 23)
+  (add-to-list 'custom-theme-load-path "~/.emacs.d/themes")
+  (load-theme 'zenburn t))
 
 ;; Fonts
 (if (eq system-type 'darwin)
