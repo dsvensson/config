@@ -18,9 +18,6 @@
     (tool-bar-mode -1))
 (if (functionp 'scroll-bar-mode)
     (scroll-bar-mode -1))
-(require 'idle-highlight-mode)
-(setq idle-highlight-idle-time 0.25)
-(set-face-background 'idle-highlight "#505050")
 
 ;; show column in statusbar
 (column-number-mode t)
@@ -61,6 +58,13 @@
 ;; highlight current line
 (require 'hl-line)
 (global-hl-line-mode t)
+
+;; highlight symbol at point after a short delay
+(require 'idle-highlight-mode)
+(setq idle-highlight-idle-time 0.25)
+(set-face-background 'idle-highlight (face-background 'default))
+(set-face-foreground 'idle-highlight "#ff8900")
+(add-hook 'prog-mode-hook 'idle-highlight-mode)
 
 ;; make highlight line a bit darker than the background color
 (set-face-background 'hl-line "#353535")
