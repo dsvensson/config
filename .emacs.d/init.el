@@ -66,6 +66,10 @@
     (set-face-font 'modeline "Silkscreen 6")
     (set-face-font 'mode-line-inactive "Silkscreen 6")))
 
+;; clickable http:// links
+(if (functionp 'goto-address-mode)
+    (add-hook 'find-file-hooks 'goto-address-mode))
+
 ;; highlight current line
 (require 'hl-line)
 (global-hl-line-mode t)
