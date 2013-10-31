@@ -46,9 +46,8 @@
 (blink-cursor-mode nil)
 
 ;; color theme
-(when (>= emacs-major-version 23)
-  (add-to-list 'custom-theme-load-path "~/.emacs.d/themes")
-  (load-theme 'zenburn t))
+(add-to-list 'custom-theme-load-path "~/.emacs.d/themes")
+(load-theme 'zenburn t)
 
 ;; Fonts
 (if (eq system-type 'darwin)
@@ -56,15 +55,13 @@
       (set-default-font "Monaco 12")
       (set-face-font 'mode-line "Monaco 10")
       (set-face-font 'mode-line-inactive "Monaco 8")
+      (set-face-font 'tooltip "Monaco 12"))
       (setq ns-antialias-text t)
-      (when (>= emacs-major-version 23)
-        (set-face-font 'tooltip "Monaco 12")))
   (progn
     ;; Proggy Clean:
     ;; http://www.proggyfonts.com/index.php?menu=download
     (set-default-font "ProggyCleanTTSZ 12")
-    (when (>= emacs-major-version 23)
-      (set-face-font 'tooltip "ProggyCleanTTSZ 12"))
+    (set-face-font 'tooltip "ProggyCleanTTSZ 12")
 
     ;; Silkscreen:
     ;; http://kottke.org/plus/type/silkscreen
@@ -98,12 +95,10 @@
 ;; highlight trailing whitespace and mixed leading space/tab.
 (require 'whitespace)
 (autoload 'global-whitespace-mode "whitespace")
-(setq whitespace-style '(face tabs trailing space-before-tab))
 (global-whitespace-mode t)
-
-(when (>= emacs-major-version 23)
-  (set-face-background 'whitespace-tab "#353535")
-  (set-face-background 'whitespace-trailing "#ff0000"))
+(setq whitespace-style '(face tabs trailing space-before-tab))
+(set-face-background 'whitespace-tab "#353535")
+(set-face-background 'whitespace-trailing "#ff0000")
 
 ;; set default tab width
 (setq tab-width 4)
@@ -210,8 +205,7 @@
                                  (c-toggle-auto-hungry-state 1)))
 
 ;; handle CamelCase properly
-(when (>= emacs-major-version 24)
-  (global-subword-mode t))
+(global-subword-mode t)
 
 ;; yank and then indent the newly formed region according to mode.
 (defun yank-and-indent ()
