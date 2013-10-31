@@ -182,6 +182,9 @@
 (speedbar-change-initial-expansion-list "buffers")
 (global-set-key (kbd "s-s") 'sr-speedbar-toggle)
 
+(require 'auto-complete-config)
+(ac-config-default)
+
 ;; IDO
 (ido-mode t)
 (ido-everywhere t)
