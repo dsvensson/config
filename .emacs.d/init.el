@@ -1,12 +1,32 @@
 (add-to-list 'load-path "~/.emacs.d")
 (add-to-list 'load-path "~/.emacs.d/vendor")
+(add-to-list 'load-path "~/.emacs.d/elpa")
+
+(require 'package)
+(add-to-list 'package-archives '("melpa" . "http://melpa.milkbox.net/packages/") t)
+(add-to-list 'package-archives '("marmalade" . "http://marmalade-repo.org/packages/") t)
+(package-initialize)
+
+;; ~/.emacs.d/elpa needs to be empty first
+(defun install-dependencies ()
+  (progn
+    (package-refresh-contents)
+    (mapc 'package-install '(magit
+                             popup
+                             sr-speedbar
+                             auto-complete
+                             auto-complete-clang-async
+                             projectile
+                             zenburn-theme
+                             solarized-theme
+                             vala-mode
+                             idle-highlight-mode
+                             smart-tabs-mode))
+    (load-file "~/.emacs.d/init.el")))
 
 ;; start the emacs server
 (server-start)
 
-(when (>= emacs-major-version 24)
-  (require 'package)
-  (add-to-list 'package-archives '("marmalade" . "http://marmalade-repo.org/packages/")))
 
 ;; enable syntax highlighting
 (global-font-lock-mode t)
