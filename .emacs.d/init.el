@@ -68,24 +68,29 @@
     (set-face-font 'mode-line-inactive "Silkscreen 6")))
 
 ;; Colors
-(defadvice load-theme (after fixup-colors activate)
-  (pcase (symbol-name (ad-get-arg 0))
-    ("zenburn" (progn
-                 (set-face-background 'whitespace-tab "#353535")
-                 (set-face-background 'whitespace-trailing "#ff0000")
-                 (set-face-background 'hl-line "#353535")
-                 (set-face-underline 'hl-line  nil)
-                 (set-face-background 'idle-highlight (face-background 'default))
-                 (set-face-foreground 'idle-highlight "#ff8900")
-                 (set-face-foreground 'show-paren-match-face "#ff8900")))
-    ("solarized-light" (progn
-                         (set-face-background 'whitespace-tab "#f2ecdb")
-                         (set-face-background 'whitespace-trailing "#ff0000")
-                         (set-face-background 'hl-line "#e5dfcf")
-                         (set-face-underline 'hl-line  nil)
-                         (set-face-background 'idle-highlight "#fcf6e4")
-                         (set-face-foreground 'idle-highlight "#ff8900")
-                         (set-face-foreground 'show-paren-match-face "#ff8900")))))
+(defadvice load-theme (after fixup-face activate)
+  (let ((color-orange "#ff8900")
+        (color-red "#ff0000")
+        (color-background nil)
+        (color-background-darker nil)
+        (color-background-darkest nil))
+    (pcase (ad-get-arg 0)
+      (`zenburn (progn
+                  (setq color-background (face-background 'default))
+                  (setq color-background-darker "#353535")
+                  (setq color-background-darkest "#353535")))
+      (`solarized-light (progn
+                          (setq color-background "#fcf6e4")
+                          (setq color-background-darker "#e5dfcf")
+                          (setq color-background-darkest "#f2ecdb"))))
+    (set-face-underline 'hl-line  nil)
+    (set-face-background 'hl-line color-background-darkest)
+    (set-face-background 'whitespace-trailing color-red)
+    (set-face-background 'whitespace-tab color-background-darker)
+    (set-face-foreground 'idle-highlight color-orange)
+    (set-face-background 'idle-highlight color-background)
+    (set-face-foreground 'show-paren-match-face color-orange)
+    (set-face-background 'show-paren-match-face color-background)))
 
 ;; clickable http:// links
 (if (functionp 'goto-address-mode)
