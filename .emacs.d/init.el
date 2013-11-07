@@ -47,7 +47,6 @@
 
 ;; color theme
 (add-to-list 'custom-theme-load-path "~/.emacs.d/themes")
-(load-theme 'zenburn t)
 
 ;; Fonts
 (if (eq system-type 'darwin)
@@ -68,6 +67,26 @@
     (set-face-font 'modeline "Silkscreen 6")
     (set-face-font 'mode-line-inactive "Silkscreen 6")))
 
+;; Colors
+(defadvice load-theme (after fixup-colors activate)
+  (pcase (symbol-name (ad-get-arg 0))
+    ("zenburn" (progn
+                 (set-face-background 'whitespace-tab "#353535")
+                 (set-face-background 'whitespace-trailing "#ff0000")
+                 (set-face-background 'hl-line "#353535")
+                 (set-face-underline 'hl-line  nil)
+                 (set-face-background 'idle-highlight (face-background 'default))
+                 (set-face-foreground 'idle-highlight "#ff8900")
+                 (set-face-foreground 'show-paren-match-face "#ff8900")))
+    ("solarized-light" (progn
+                         (set-face-background 'whitespace-tab "#f2ecdb")
+                         (set-face-background 'whitespace-trailing "#ff0000")
+                         (set-face-background 'hl-line "#e5dfcf")
+                         (set-face-underline 'hl-line  nil)
+                         (set-face-background 'idle-highlight "#fcf6e4")
+                         (set-face-foreground 'idle-highlight "#ff8900")
+                         (set-face-foreground 'show-paren-match-face "#ff8900")))))
+
 ;; clickable http:// links
 (if (functionp 'goto-address-mode)
     (add-hook 'find-file-hooks 'goto-address-mode))
@@ -78,14 +97,8 @@
 
 ;; highlight symbol at point after a short delay
 (require 'idle-highlight-mode)
-(setq idle-highlight-idle-time 0.25)
-(set-face-background 'idle-highlight (face-background 'default))
-(set-face-foreground 'idle-highlight "#ff8900")
+(setq idle-highlight-idle-time 0.35)
 (add-hook 'prog-mode-hook 'idle-highlight-mode)
-
-;; make highlight line a bit darker than the background color
-(set-face-background 'hl-line "#353535")
-(set-face-underline 'hl-line  nil)
 
 ;; disable welcome message
 (setq inhibit-startup-message t)
@@ -97,8 +110,6 @@
 (autoload 'global-whitespace-mode "whitespace")
 (global-whitespace-mode t)
 (setq whitespace-style '(face tabs trailing space-before-tab))
-(set-face-background 'whitespace-tab "#353535")
-(set-face-background 'whitespace-trailing "#ff0000")
 
 ;; set default tab width
 (setq tab-width 4)
@@ -112,7 +123,6 @@
 
 ;; match parenthesis
 (show-paren-mode t)
-(set-face-foreground 'show-paren-match-face "#ff5400")
 
 ;; show what function i'm in
 (which-func-mode t)
@@ -390,3 +400,5 @@
 
 (global-set-key "\M-p" 'move-line-up)
 (global-set-key "\M-n" 'move-line-down)
+
+(load-theme 'zenburn t)
