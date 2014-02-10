@@ -17,14 +17,15 @@
     (mapc 'package-install '(magit
                              popup
                              sr-speedbar
+                             pos-tip
                              auto-complete
-                             auto-complete-clang-async
                              projectile
                              zenburn-theme
                              solarized-theme
                              vala-mode
                              idle-highlight-mode
-                             smart-tabs-mode))
+                             smart-tabs-mode
+                             cython-mode))
     (load-file "~/.emacs.d/init.el")))
 
 ;; start the emacs server
