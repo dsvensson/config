@@ -1,6 +1,9 @@
-(add-to-list 'load-path "~/.emacs.d")
-(add-to-list 'load-path "~/.emacs.d/vendor")
-(add-to-list 'load-path "~/.emacs.d/elpa")
+(defun prepend-load-path (new-path)
+  (setq load-path (cons (expand-file-name new-path) load-path)))
+
+(mapc 'prepend-load-path '("~/.emacs.d"
+                           "~/.emacs.d/vendor"
+                           "~/.emacs.d/elpa"))
 
 (require 'package)
 (add-to-list 'package-archives '("melpa" . "http://melpa.milkbox.net/packages/") t)
