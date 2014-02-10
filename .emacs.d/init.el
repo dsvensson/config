@@ -202,6 +202,9 @@
 (speedbar-change-initial-expansion-list "buffers")
 (global-set-key (kbd "s-s") 'sr-speedbar-toggle)
 
+;; Accept new TAGS automatically
+(setq tags-revert-without-query t)
+
 
 ;; IDO
 (ido-mode t)
