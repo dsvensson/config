@@ -205,6 +205,9 @@
 ;; Accept new TAGS automatically
 (setq tags-revert-without-query t)
 
+(when (eq system-type 'darwin)
+  (setq projectile-tags-command "/opt/local/bin/ctags -Re %s %s"))
+
 
 ;; IDO
 (ido-mode t)
