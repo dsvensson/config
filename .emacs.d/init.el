@@ -71,6 +71,12 @@
     (set-face-font 'modeline "Silkscreen 6")
     (set-face-font 'mode-line-inactive "Silkscreen 6")))
 
+;; Swap option/cmd on OS X
+(if (eq system-type 'darwin)
+    (progn
+      (setq mac-option-modifier 'meta)
+      (setq mac-command-modifier 'hyper)))
+
 ;; Colors
 (defadvice load-theme (after fixup-face activate)
   (let ((color-orange "#ff8900")
