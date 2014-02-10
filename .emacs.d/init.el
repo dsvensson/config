@@ -413,7 +413,9 @@
   (interactive "*p")
   (move-text-internal arg))
 
-(global-set-key "\M-p" 'move-line-up)
-(global-set-key "\M-n" 'move-line-down)
+(global-set-key (kbd "M-p") 'move-line-up)
+(global-set-key (kbd "M-<up>") 'move-line-up)
+(global-set-key (kbd "M-n") 'move-line-down)
+(global-set-key (kbd "M-<down>") 'move-line-down)
 
 (load-theme 'zenburn t)
