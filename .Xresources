@@ -22,10 +22,18 @@ urxvt.scrollBar: false
 urxvt.saveLines: 1500
 urxvt.urlLauncher: x-www-browser
 
-
-urxvt.font: -*-terminus-*-*-*-*-*-*-*-*-*-*-*-*
-urxvt.boldFont: -*-terminus-*-*-*-*-*-*-*-*-*-*-*-*
 urxvt.modifier: alt
 urxvt.keysym.M-u: perl:mark-yank-urls:activate_mark_mode
 urxvt.underlineURLs: true
 urxvt.perl-ext: selection,mark-yank-urls
+
+urxvt.font:             xft:Monaco:antialias=true:autohinting=true:size=12
+urxvt.boldFont:         xft:Monaco:bold:antialias=true:autohinting=true:size=12
+urxvt.italicFont:       xft:Monaco:italic:antialias=true:autohinting=true:size=12
+urxvt.boldItalicFont:   xft:Monaco:bolditalic:antialias=true:autohinting=true:size=12
+
+Xft.dpi:        96
+Xft.antialias:  true
+Xft.rgba:       subpixel
+Xft.hinting:    true
+Xft.hintstyle:  hintfull
