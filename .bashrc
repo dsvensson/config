@@ -66,8 +66,8 @@ export PATH=$PATH:~/opt/bin
 
 alias grep="grep --color=auto"
 
-alias less="less -R"
-eval "$(lesspipe)"
+export LESSOPEN="| /usr/share/source-highlight/src-hilite-lesspipe.sh %s"
+export LESS=' -R '
 
 PS1='\[\033]0;\w $(parse_git_branch)\007\]\[\033[01;32m\]\u@\h\[\033[00m\]:\[\033[01;34m\]\w\[\033[00m\]$(parse_git_branch)\$ '
 
