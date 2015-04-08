@@ -21,10 +21,11 @@ set nowritebackup
 set noswapfile
 
 if has('gui_running')
-    set guifont=ProggyCleanTTSZ\ 12
+    set guifont=Inconsolata\ 12
     set guioptions-=T
     set guioptions-=m
     set cursorline
+    set lines=50 columns=100
 endif
 
 if has('gui_running')
