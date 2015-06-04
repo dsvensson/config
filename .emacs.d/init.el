@@ -1,86 +1,63 @@
-(defun prepend-load-path (new-path)
-  (setq load-path (cons (expand-file-name new-path) load-path)))
+(require 'cask "~/.cask/cask.el")
+(cask-initialize)
 
-(mapc 'prepend-load-path '("~/.emacs.d"
-                           "~/.emacs.d/vendor"
-                           "~/.emacs.d/elpa"))
+(add-to-list 'load-path "~/.emacs.d/vendor")
+(add-to-list 'custom-theme-load-path "~/.emacs.d/themes")
 
-(require 'package)
-(add-to-list 'package-archives '("melpa" . "http://melpa.milkbox.net/packages/") t)
-(add-to-list 'package-archives '("marmalade" . "http://marmalade-repo.org/packages/") t)
-(package-initialize)
+(require 'use-package)
 
-;; ~/.emacs.d/elpa needs to be empty first
-(defun install-dependencies ()
-  (progn
-    (package-refresh-contents)
-    (mapc 'package-install '(magit
-                             popup
-                             sr-speedbar
-                             pos-tip
-                             auto-complete
-                             projectile
-                             zenburn-theme
-                             solarized-theme
-                             vala-mode
-                             idle-highlight-mode
-                             smart-tabs-mode
-                             cython-mode))
-    (load-file "~/.emacs.d/init.el")))
+(custom-set-variables
+ '(use-package-verbose t)
+ '(use-package-always-ensure t))
 
-;; start the emacs server
-(server-start)
+(custom-set-variables
+ '(inhibit-startup-message t)
+ '(inhibit-startup-echo-area-message t)
+ '(initial-scratch-message nil))
 
-
-;; enable syntax highlighting
-(global-font-lock-mode t)
-
-;; disable menubar, toolbar and scrollbar
 (if (functionp 'menu-bar-mode)
-    (menu-bar-mode nil))
+    (menu-bar-mode -1))
 (if (functionp 'tool-bar-mode)
     (tool-bar-mode -1))
 (if (functionp 'scroll-bar-mode)
     (scroll-bar-mode -1))
 
-;; show column in statusbar
+(server-start)
+(global-font-lock-mode t)
 (column-number-mode t)
+(blink-cursor-mode -1)
 
-;; don't let the cursor blink
-(blink-cursor-mode nil)
-
-;; color theme
-(add-to-list 'custom-theme-load-path "~/.emacs.d/themes")
+(defalias 'yes-or-no-p 'y-or-n-p)
 
 ;; Fonts
 (if (eq system-type 'darwin)
     (progn
-      (set-default-font "Monaco 12")
+      (set-frame-font "Monaco 12")
       (set-face-font 'mode-line "Monaco 10")
       (set-face-font 'mode-line-inactive "Monaco 8")
-      (set-face-font 'tooltip "Monaco 12"))
-      (setq ns-antialias-text t)
+      (set-face-font 'tooltip "Monaco 12")
+      (custom-set-variables
+       '(ns-antialias-text t)))
   (progn
     ;; Proggy Clean:
     ;; http://www.proggyfonts.com/index.php?menu=download
-    (set-default-font "ProggyCleanTTSZ 12")
-    (set-face-font 'tooltip "ProggyCleanTTSZ 12")
+    ;; (set-default-font "ProggyCleanTTSZ 12")
+    ;; (set-face-font 'tooltip "ProggyCleanTTSZ 12")
+    (set-frame-font "Inconsolata 14")
+    (set-face-font 'tooltip "Inconsolata 14")
 
     ;; Silkscreen:
     ;; http://kottke.org/plus/type/silkscreen
-    (set-face-font 'modeline "Silkscreen 6")
-    (set-face-font 'mode-line-inactive "Silkscreen 6")))
+    ;; (set-face-font 'mode-line "Silkscreen 6")
+    ;; (set-face-font 'mode-line-inactive "Silkscreen 6")))
+    (set-face-font 'mode-line "Inconsolata 14")
+    (set-face-font 'mode-line-inactive "Inconsolata 14")))
 
-;; Swap option/cmd on OS X
-(if (eq system-type 'darwin)
-    (progn
-      (setq mac-option-modifier 'meta)
-      (setq mac-command-modifier 'hyper)))
-
-;; Colors
+;; Patch some colors in themes
 (defadvice load-theme (after fixup-face activate)
   (let ((color-orange "#ff8900")
         (color-red "#ff0000")
+        (color-linum "#92a0a0")
         (color-background nil)
         (color-background-darker nil)
         (color-background-darkest nil))
@@ -93,6 +70,7 @@
                           (setq color-background "#fcf6e4")
                           (setq color-background-darker "#e5dfcf")
                           (setq color-background-darkest "#f2ecdb"))))
+    (set-face-foreground 'linum color-linum)
     (set-face-underline 'hl-line  nil)
     (set-face-background 'hl-line color-background-darkest)
     (set-face-background 'whitespace-trailing color-red)
@@ -106,320 +84,161 @@
 (if (functionp 'goto-address-mode)
     (add-hook 'find-file-hooks 'goto-address-mode))
 
-;; highlight current line
-(require 'hl-line)
-(global-hl-line-mode t)
-
-;; highlight symbol at point after a short delay
-(require 'idle-highlight-mode)
-(setq idle-highlight-idle-time 0.35)
-(add-hook 'prog-mode-hook 'idle-highlight-mode)
-
-;; disable welcome message
-(setq inhibit-startup-message t)
-(setq inhibit-startup-echo-area-message t)
-(setq initial-scratch-message nil)
-
-;; highlight trailing whitespace and mixed leading space/tab.
-(require 'whitespace)
-(autoload 'global-whitespace-mode "whitespace")
-(global-whitespace-mode t)
-(setq whitespace-style '(face tabs trailing space-before-tab))
-
-;; set default tab width
-(setq tab-width 4)
-(setq-default tab-width 4)
-
-;; edit compressed files
 (auto-compression-mode t)
-
-;; disable backup files
-(setq make-backup-files nil)
-
-;; match parenthesis
 (show-paren-mode t)
-
-;; show what function i'm in
-(which-func-mode t)
-
-;; kill the newline too
-(setq kill-whole-line t)
-
-;; http://stupefydeveloper.blogspot.com/2009/04/emacs-proper-kill-whole-line.html
-(defun kill-total-line ()
-  (interactive)
-  (let ((kill-whole-line t))
-    (beginning-of-line)
-    (kill-line)
-    (setq top (car kill-ring))
-    (setq last (substring top -1))
-    (if (string-equal last "\n")
-        (let ()
-          (setq stripped (substring top 0 -1))
-          (setq kill-ring (cons (cdr kill-ring)))))))
-
-(setq mouse-wheel-scroll-amount '(1 ((shift) . 1)))
-(setq mouse-wheel-follow-mouse 't)
-(setq scroll-step 1)
-
-(setq auto-save-default nil)
-
-;; equivalence to vim dd
-(global-set-key (kbd "C-u") 'kill-total-line)
-
-;; F1 for man-pages
-(global-set-key (kbd "<f1>") #'manual-entry)
-
-;; short yes/no answers
-(fset 'yes-or-no-p 'y-or-n-p)
-
-;; mark lines not in buffer
-(setq default-indicate-empty-lines t)
-
-;; switch buffer back and forth with keys
-(global-set-key [XF86Back] 'previous-buffer)
-(global-set-key [XF86Forward] 'next-buffer)
-
-;; uniquify buffer names if files are named similarily
-(require 'uniquify)
-(setq uniquify-buffer-name-style 'reverse)
-(setq uniquify-separator "/")
-(setq uniquify-ignore-buffers-re "^\\*")
-(setq uniquify-buffer-name-style 'post-forward-angle-brackets)
-
-;; automatically rescan symbols
-(require 'imenu)
-(setq imenu-auto-rescan t)
-
-;; speedbar
-(require 'sr-speedbar)
-(setq speedbar-use-images nil)
-(setq speedbar-show-unknown-files t)
-(setq speedbar-tag-hierarchy-method nil)
-(setq speedbar-hide-button-brackets-flag t)
-(setq speedbar-use-imenu-flag t)
-(setq sr-speedbar-auto-refresh t)
-(speedbar-change-initial-expansion-list "buffers")
-(global-set-key (kbd "s-s") 'sr-speedbar-toggle)
-
-;; Accept new TAGS automatically
-(setq tags-revert-without-query t)
-
-(when (eq system-type 'darwin)
-  (setq projectile-tags-command "/opt/local/bin/ctags -Re %s %s"))
-
-
-;; IDO
-(ido-mode t)
-(ido-everywhere t)
-(setq ido-enable-flex-matching t)
-
-(add-hook 'python-mode-hook '(lambda ()
-                               (setq tab-width 4)
-                               (setq python-indent 4)))
-
-;; indent when starting a new line
-(add-hook 'c-mode-hook '(lambda ()
-                          (setq-default c-basic-offset 4)
-                          (c-set-style "k&r")
-                          (c-set-offset 'case-label '+)
-                          (setq c-cleanup-list '(space-before-funcall
-                                                 brace-else-brace
-                                                 brace-elseif-brace
-                                                 comment-close-slash))
-                          (local-set-key (kbd "RET") 'c-context-line-break)))
-
-                                        ; automagicalize
-(add-hook 'c-mode-common-hook '(lambda ()
-                                 (c-toggle-auto-hungry-state 1)))
-
-;; handle CamelCase properly
+(which-function-mode t)
 (global-subword-mode t)
 
-;; yank and then indent the newly formed region according to mode.
+(custom-set-variables
+ '(auto-save-default nil)
+ '(make-backup-files nil)
+ '(kill-whole-line t)
+ '(mouse-wheel-scroll-amount '(1 ((shift) . 1)))
+ '(mouse-wheel-follow-mouse 't)
+ '(scroll-step 1)
+ '(indicate-empty-lines t)
+ '(indent-tabs-mode nil)
+ '(visible-bell nil))
+
+(use-package hl-line
+  :init (global-hl-line-mode t))
+
+(use-package linum
+  :init (global-linum-mode t)
+  :config (progn
+            (defun linum-format-func (line)
+              (let ((w (length (number-to-string (count-lines (point-min) (point-max))))))
+                (propertize (format (format " %%%dd " w) line) 'face 'linum)))
+            (setq linum-format 'linum-format-func)))
+
+(use-package idle-highlight-mode
+  :init (add-hook 'prog-mode-hook 'idle-highlight-mode)
+  :config (custom-set-variables
+           '(idle-highlight-idle-time 0.35)))
+
+(use-package whitespace
+  :init (progn
+          (autoload 'global-whitespace-mode "whitespace")
+          (global-whitespace-mode t))
+  :config (custom-set-variables
+           '(whitespace-style '(face tabs trailing space-before-tab)))
+  :diminish global-whitespace-mode)
+
+(use-package ws-butler
+  :init (ws-butler-global-mode)
+  :config (custom-set-variables
+           '(ws-butler-keep-whitespace-before-point nil))
+  :diminish ws-butler-mode)
+
+(use-package uniquify
+  :ensure nil
+  :config (custom-set-variables
+           '(uniquify-buffer-name-style 'reverse)
+           '(uniquify-separator "/")
+           '(uniquify-ignore-buffers-re "^\\*")
+           '(uniquify-buffer-name-style 'post-forward-angle-brackets)))
+
+(use-package drag-stuff
+  :init (drag-stuff-global-mode 1)
+  :bind (("M-p"  . drag-stuff-up)
+         ("M-<up>" . drag-stuff-up)
+         ("M-n" . drag-stuff-down)
+         ("M-<down>" . drag-stuff-down))
+  :diminish drag-stuff-mode)
+
+(use-package ido
+  :init (progn
+          (ido-mode t)
+          (ido-everywhere t))
+  :config (custom-set-variables
+           '(ido-use-filename-at-point 'guess)
+           '(ido-create-new-buffer 'always)
+           '(ido-enable-flex-matching t)))
+
+(use-package smex
+  :init (smex-initialize)
+  :bind ("M-x" . smex))
+
+(use-package flycheck
+  :init (global-flycheck-mode)
+  :diminish flycheck-mode)
+
+(use-package flycheck-cask
+  :init (add-hook 'flycheck-mode-hook 'flycheck-cask-setup))
+
+(use-package projectile
+  :config
+  (when (eq system-type 'darwin)
+    (custom-set-variables
+     '(projectile-tags-command "/opt/local/bin/ctags -Re %s %s"))))
+
+(use-package company
+  :init (progn
+          (use-package company-quickhelp
+            :init (add-hook 'global-company-mode-hook #'company-quickhelp-mode))
+          (global-company-mode))
+  :config (custom-set-variables '(company-idle-delay 0))
+  :diminish company-mode)
+
+(use-package smart-tabs-mode
+  :init
+  (smart-tabs-insinuate 'c 'c++))
+
+(use-package python
+  :mode (("\\.py$" . python-mode)
+         ("wscript$" . python-mode)
+         ("SConstruct$" . python-mode)
+         ("SConscript$" . python-mode))
+  :config (custom-set-variables
+           '(tab-width 4)
+           '(python-indent-offset 4)))
+
+(use-package emacs-lisp-mode
+  :ensure nil
+  :bind ("M-." . find-function-at-point)
+  :interpreter ("emacs" . emacs-lisp-mode)
+  :mode ("Cask" . emacs-lisp-mode))
+
+(use-package eldoc
+  :init (add-hook 'emacs-lisp-mode-hook 'turn-on-eldoc-mode)
+  :diminish eldoc-mode)
+
+(use-package cider
+  :init (add-hook 'clojure-mode-hook #'cider-mode))
+
+(use-package cc-mode
+  :init (add-hook 'c-mode-hook (lambda () (progn
+                                            (c-set-style "k&r")
+                                            (c-set-offset 'case-label '+)
+                                            (c-toggle-auto-hungry-state 1))))
+  :config (progn
+            (custom-set-variables
+             '(indent-tabs-mode t)
+             '(c-basic-offset 4)
+             '(c-cleanup-list '(space-before-funcall
+                                brace-else-brace
+                                brace-elseif-brace
+                                comment-close-slash)))
+            (define-key c-mode-base-map (kbd "RET") 'c-context-line-break)))
+
 (defun yank-and-indent ()
   (interactive)
   (yank)
   (call-interactively 'indent-region))
-(global-set-key "\C-y" 'yank-and-indent)
 
-;; default to regexp searches
-(global-set-key "\C-s" 'isearch-forward-regexp)
-(global-set-key "\C-r" 'isearch-backward-regexp)
-(global-set-key "\C-\M-s" 'isearch-forward)
-(global-set-key "\C-\M-r" 'isearch-backward)
+(global-set-key (kbd "<f1>") #'manual-entry)
+(global-set-key (kbd "C-M-r") 'isearch-backward)
+(global-set-key (kbd "C-M-s") 'isearch-forward)
+(global-set-key (kbd "C-r") 'isearch-backward-regexp)
+(global-set-key (kbd "C-s") 'isearch-forward-regexp)
+(global-set-key (kbd "C-u") 'kill-whole-line)
+(global-set-key (kbd "C-y") 'yank-and-indent)
+(global-set-key [XF86Back] 'previous-buffer)
+(global-set-key [XF86Forward] 'next-buffer)
 
-;; automatically select python for SCons/waf files
-(add-to-list 'auto-mode-alist '("wscript" . python-mode))
-(add-to-list 'auto-mode-alist '("SConstruct" . python-mode))
-(add-to-list 'auto-mode-alist '("SConscript" . python-mode))
-
-(autoload 'vala-mode "vala-mode" "Major mode for editing Vala code." t)
-(add-to-list 'auto-mode-alist '("\\.vala$" . vala-mode))
-(add-to-list 'auto-mode-alist '("\\.vapi$" . vala-mode))
-
-(autoload 'xs-mode "xs-mode" "Major mode for XS files" t)
-(add-to-list 'auto-mode-alist '("\\.xs$" . xs-mode))
-
-;; smart tabs
-(require 'smarttabs)
-
-;; automatically nuke all trailing whitespaces
-(add-hook 'before-save-hook 'delete-trailing-whitespace)
-
-;; flyspell comments
-(add-hook 'c-mode-hook 'flyspell-prog-mode)
-
-;; pyflakes static analysis of python code
-(when (load "flymake" t)
-  (defun flymake-pyflakes-init ()
-    (let* ((temp-file (flymake-init-create-temp-buffer-copy
-                       'flymake-create-temp-inplace))
-           (local-file (file-relative-name
-                        temp-file
-                        (file-name-directory buffer-file-name))))
-      (list "pyflakes" (list local-file))))
-
-  (add-to-list 'flymake-allowed-file-name-masks
-               '("\\.py\\'" flymake-pyflakes-init)))
-
-(add-hook 'find-file-hook 'flymake-find-file-hook)
-
-;; disable flymake message box on failure
-(setq-default flymake-gui-warnings-enabled nil)
-
-(autoload 'espresso-mode "espresso")
-
-(defun custom-js2-indent-function ()
-  (interactive)
-  (save-restriction
-    (widen)
-    (let* ((inhibit-point-motion-hooks t)
-           (parse-status (save-excursion (syntax-ppss (point-at-bol))))
-           (offset (- (current-column) (current-indentation)))
-           (indentation (espresso--proper-indentation parse-status))
-           node)
-
-      (save-excursion
-        ;; I like to indent case and labels to half of the tab width
-        (back-to-indentation)
-        (if (looking-at "case\\s-")
-            (setq indentation (+ indentation (/ espresso-indent-level 2))))
-        (if (looking-at "default:")
-            (setq indentation (+ indentation (/ espresso-indent-level 2))))
-
-        ;; consecutive declarations in a var statement are nice if
-        ;; properly aligned, i.e:
-        ;;
-        ;; var foo = "bar",
-        ;;     bar = "foo";
-        (setq node (js2-node-at-point))
-        (when (and node
-                   (= js2-NAME (js2-node-type node))
-                   (= js2-VAR (js2-node-type (js2-node-parent node))))
-          (setq indentation (+ 4 indentation))))
-
-      (indent-line-to indentation)
-      (when (> offset 0) (forward-char offset)))))
-
-(defun custom-js2-indent ()
-  (interactive)
-  (save-restriction
-    (save-excursion
-      (widen)
-      (let* ((inhibit-point-motion-hooks t)
-             (parse-status (syntax-ppss (point)))
-             (beg (nth 1 parse-status))
-             (end-marker (make-marker))
-             (end (progn (goto-char beg) (forward-list) (point)))
-             (ovl (make-overlay beg end)))
-        (set-marker end-marker end)
-        (overlay-put ovl 'face 'highlight)
-        (goto-char beg)
-        (while (< (point) (marker-position end-marker))
-          ;; don't reindent blank lines so we don't set the "buffer
-          ;; modified" property for nothing
-          (beginning-of-line)
-          (unless (looking-at "\\s-*$")
-            (indent-according-to-mode))
-          (forward-line))
-        (run-with-timer 0.5 nil '(lambda(ovl)
-                                   (delete-overlay ovl)) ovl)))))
-
-(defun customize-js2-mode ()
-  (require 'espresso)
-  (setq espresso-indent-level 4
-        indent-tabs-mode nil
-        c-basic-offset 4)
-  (setq c-current-comment-prefix
-        (if (listp c-comment-prefix-regexp)
-            (cdr-safe (or (assoc major-mode c-comment-prefix-regexp)
-                          (assoc 'other c-comment-prefix-regexp)))
-          c-comment-prefix-regexp))
-  (c-toggle-auto-state 0)
-  (c-toggle-hungry-state 1)
-  (set (make-local-variable 'indent-line-function) 'custom-js2-indent-function)
-  (define-key js2-mode-map [(meta control |)] 'cperl-lineup)
-  (define-key js2-mode-map [(meta control \;)]
-    '(lambda()
-       (interactive)
-       (insert "/* -----[ ")
-       (save-excursion
-         (insert " ]----- */"))
-       ))
-  (define-key js2-mode-map [(return)] 'newline-and-indent)
-  (define-key js2-mode-map [(backspace)] 'c-electric-backspace)
-  (define-key js2-mode-map [(control d)] 'c-electric-delete-forward)
-  (define-key js2-mode-map [(control meta q)] 'custom-js2-indent)
-  (if (featurep 'js2-highlight-vars)
-      (js2-highlight-vars-mode)))
-
-(add-hook 'js2-mode-hook 'customize-js2-mode)
-
-(defun customize-lisp-mode ()
-  (setq indent-tabs-mode nil)
-  (setq tab-width 2))
-
-(add-hook 'lisp-mode-hook 'customize-lisp-mode)
-(add-hook 'emacs-lisp-mode-hook 'customize-lisp-mode)
-
-;; Move lines or regions up/down
-(defun move-text-internal (arg)
-  (cond
-   ((and mark-active transient-mark-mode)
-    (if (> (point) (mark))
-        (exchange-point-and-mark))
-    (let ((column (current-column))
-          (text (delete-and-extract-region (point) (mark))))
-      (forward-line arg)
-      (move-to-column column t)
-      (set-mark (point))
-      (insert text)
-      (exchange-point-and-mark)
-      (setq deactivate-mark nil)))
-   (t
-    (let ((column (current-column)))
-      (beginning-of-line)
-      (when (or (> arg 0) (not (bobp)))
-        (forward-line)
-        (when (or (< arg 0) (not (eobp)))
-          (transpose-lines arg))
-        (forward-line -1))
-      (move-to-column column t)))))
-
-(defun move-line-up (arg)
-  "Move region (transient-mark-mode active) or current line arg lines up."
-  (interactive "*p")
-  (move-text-internal (- arg)))
-
-(defun move-line-down (arg)
-  "Move region (transient-mark-mode active) or current line arg lines down."
-  (interactive "*p")
-  (move-text-internal arg))
-
-(global-set-key (kbd "M-p") 'move-line-up)
-(global-set-key (kbd "M-<up>") 'move-line-up)
-(global-set-key (kbd "M-n") 'move-line-down)
-(global-set-key (kbd "M-<down>") 'move-line-down)
+(if (eq system-type 'darwin)
+    (custom-set-variables
+     '(mac-option-modifier 'meta)
+     '(mac-command-modifier 'hyper)))
 
 (load-theme 'zenburn t)
