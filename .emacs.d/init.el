@@ -89,17 +89,6 @@
 (which-function-mode t)
 (global-subword-mode t)
 
-(custom-set-variables
- '(auto-save-default nil)
- '(make-backup-files nil)
- '(kill-whole-line t)
- '(mouse-wheel-scroll-amount '(1 ((shift) . 1)))
- '(mouse-wheel-follow-mouse 't)
- '(scroll-step 1)
- '(indicate-empty-lines t)
- '(indent-tabs-mode nil)
- '(visible-bell nil))
-
 (use-package hl-line
   :init (global-hl-line-mode t))
 
@@ -129,6 +118,9 @@
   :config (custom-set-variables
            '(ws-butler-keep-whitespace-before-point nil))
   :diminish ws-butler-mode)
+
+(use-package pretty-symbols
+  :init (global-prettify-symbols-mode))
 
 (use-package uniquify
   :ensure nil
@@ -203,14 +195,23 @@
   :init (add-hook 'emacs-lisp-mode-hook 'turn-on-eldoc-mode)
   :diminish eldoc-mode)
 
+(use-package clojure-mode
+  :config
+  (custom-set-variables
+   '(clojure--prettify-symbols-alist
+     '(("fn"  . ?λ)
+       ("!=" . ?≠)
+       ("<=" . ?≤)
+       (">=" . ?≥)))))
+
 (use-package cider
   :init (add-hook 'clojure-mode-hook #'cider-mode))
 
 (use-package cc-mode
   :init (add-hook 'c-mode-hook (lambda () (progn
-                                            (c-set-style "k&r")
-                                            (c-set-offset 'case-label '+)
-                                            (c-toggle-auto-hungry-state 1))))
+                                       (c-set-style "k&r")
+                                       (c-set-offset 'case-label '+)
+                                       (c-toggle-auto-hungry-state 1))))
   :config (progn
             (custom-set-variables
              '(indent-tabs-mode t)
@@ -220,6 +221,17 @@
                                 brace-elseif-brace
                                 comment-close-slash)))
             (define-key c-mode-base-map (kbd "RET") 'c-context-line-break)))
+
+(custom-set-variables
+ '(auto-save-default nil)
+ '(make-backup-files nil)
+ '(kill-whole-line t)
+ '(mouse-wheel-scroll-amount '(1 ((shift) . 1)))
+ '(mouse-wheel-follow-mouse 't)
+ '(scroll-step 1)
+ '(indicate-empty-lines t)
+ '(indent-tabs-mode nil)
+ '(visible-bell nil))
 
 (defun yank-and-indent ()
   (interactive)
