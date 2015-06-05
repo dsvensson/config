@@ -1,0 +1,3 @@
+.emacs.d/.cask
+.vim/autoload
+.vim/plugged
