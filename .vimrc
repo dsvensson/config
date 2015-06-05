@@ -1,5 +1,34 @@
-syntax on
+set encoding=utf-8
+scriptencoding utf-8
 
+set laststatus=2
+set noshowmode
+
+if !has('gui_running')
+  set t_Co=256
+endif
+
+let g:lightline = {
+      \ 'colorscheme': 'wombat',
+      \ 'active': {
+      \   'left': [ [ 'mode', 'paste' ],
+      \             [ 'fugitive', 'readonly', 'filename', 'modified' ] ]
+      \ },
+      \ 'component': {
+      \   'readonly': '%{&filetype=="help"?"":&readonly?"⭤":""}',
+      \   'modified': '%{&filetype=="help"?"":&modified?"+":&modifiable?"":"-"}',
+      \   'fugitive': '%{exists("*fugitive#head")?fugitive#head():""}'
+      \ },
+      \ 'component_visible_condition': {
+      \   'readonly': '(&filetype!="help"&& &readonly)',
+      \   'modified': '(&filetype!="help"&&(&modified||!&modifiable))',
+      \   'fugitive': '(exists("*fugitive#head") && ""!=fugitive#head())'
+      \ },
+		\ 'separator': { 'left': "\ue0b0", 'right': "\ue0b2" },
+		  \ 'subseparator': { 'left': "\ue0b1", 'right': "\ue0b3" }
+      \ }
+
+syntax on
 set background=dark
 
 set incsearch
@@ -20,8 +49,9 @@ set nobackup
 set nowritebackup
 set noswapfile
 
+
 if has('gui_running')
-    set guifont=Inconsolata\ 12
+    set guifont=Inconsolata\ for\ Powerline\ 12
     set guioptions-=T
     set guioptions-=m
     set cursorline

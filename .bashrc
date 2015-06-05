@@ -54,12 +54,6 @@ if [ -f /etc/bash_completion ]; then
     . /etc/bash_completion
 fi
 
-# colorized man-pages
-export LESS_TERMCAP_md=$'\E[01;34m'  # begin bold
-export LESS_TERMCAP_me=$'\E[0m'      # end mode
-export LESS_TERMCAP_ue=$'\E[0m'      # end underline
-export LESS_TERMCAP_us=$'\E[04;34m'  # begin underline
-
 export TERM=xterm
 
 export PATH=$PATH:~/opt/bin

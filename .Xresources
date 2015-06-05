@@ -1,5 +1,7 @@
-URxvt.foreground: #aaaaaa
+URxvt.termName: xterm-256color
 URxvt.depth: 32
+
+URxvt.foreground: #aaaaaa
 URxvt.background: rgba:1111/1111/1111/dddd
 
 URxvt.color0: #000000
@@ -19,6 +21,9 @@ URxvt.color13: #cf9ebe
 URxvt.color14: #71bebe
 URxvt.color15: #ffffff
 
+URxvt.colorBD:  #ffffff
+URxvt.colorUL:  #5f87af
+
 URxvt.scrollBar: false
 URxvt.saveLines: 1500
 URxvt.url-select.launcher: xdg-open
@@ -28,11 +33,10 @@ URxvt.underlineURLs: true
 URxvt.perl-ext-common: selection,url-select,searchable-scrollback
 URxvt.searchable-scrollback: CM-s
 
-
-URxvt.font:             xft:Inconsolata:size=12
-URxvt.boldFont:         xft:Inconsolata:bold:size=12
-URxvt.italicFont:       xft:Inconsolata:italic:size=12
-URxvt.boldItalicFont:   xft:Inconsolata:bolditalic:size=12
+URxvt.font:             xft:Inconsolata:size=14,xft:Inconsolata for Powerline:style=Medium:size=14
+URxvt.boldFont:         xft:Inconsolata:bold:size=14
+URxvt.italicFont:       xft:Inconsolata:italic:size=14
+URxvt.boldItalicFont:   xft:Inconsolata:bolditalic:size=14
 
 Xft.antialias:  true
 Xft.rgba:       subpixel
