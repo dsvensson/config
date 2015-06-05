@@ -1,3 +1,8 @@
+call plug#begin()
+Plug 'itchyny/lightline.vim'
+Plug 'sheerun/vim-wombat-scheme'
+call plug#end()
+
 set encoding=utf-8
 scriptencoding utf-8
 
