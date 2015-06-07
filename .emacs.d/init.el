@@ -90,73 +90,94 @@
 (global-subword-mode t)
 
 (use-package hl-line
-  :init (global-hl-line-mode t))
+  :init
+  (global-hl-line-mode t))
 
 (use-package linum
-  :init (global-linum-mode t)
-  :config (progn
-            (defun linum-format-func (line)
-              (let ((w (length (number-to-string (count-lines (point-min) (point-max))))))
-                (propertize (format (format " %%%dd " w) line) 'face 'linum)))
-            (setq linum-format 'linum-format-func)))
+  :init
+  (global-linum-mode t)
+  :config
+  (defun linum-format-func (line)
+    (let ((w (length (number-to-string (count-lines (point-min) (point-max))))))
+      (propertize (format (format " %%%dd " w) line) 'face 'linum)))
+  (setq linum-format 'linum-format-func))
 
 (use-package idle-highlight-mode
-  :init (add-hook 'prog-mode-hook 'idle-highlight-mode)
-  :config (custom-set-variables
-           '(idle-highlight-idle-time 0.35)))
+  :init
+  (add-hook 'prog-mode-hook 'idle-highlight-mode)
+  :config
+  (custom-set-variables
+   '(idle-highlight-idle-time 0.35)))
 
 (use-package whitespace
-  :init (progn
-          (autoload 'global-whitespace-mode "whitespace")
-          (global-whitespace-mode t))
-  :config (custom-set-variables
-           '(whitespace-style '(face tabs trailing space-before-tab)))
-  :diminish global-whitespace-mode)
+  :init
+  (autoload 'global-whitespace-mode "whitespace")
+  (global-whitespace-mode t)
+  :config
+  (custom-set-variables
+   '(whitespace-style '(face tabs trailing space-before-tab)))
+  :diminish
+  global-whitespace-mode)
 
 (use-package ws-butler
-  :init (ws-butler-global-mode)
-  :config (custom-set-variables
-           '(ws-butler-keep-whitespace-before-point nil))
-  :diminish ws-butler-mode)
+  :init
+  (ws-butler-global-mode)
+  :config
+  (custom-set-variables
+   '(ws-butler-keep-whitespace-before-point nil))
+  :diminish
+  ws-butler-mode)
 
 (use-package pretty-symbols
-  :init (global-prettify-symbols-mode))
+  :init
+  (global-prettify-symbols-mode))
 
 (use-package uniquify
-  :ensure nil
-  :config (custom-set-variables
-           '(uniquify-buffer-name-style 'reverse)
-           '(uniquify-separator "/")
-           '(uniquify-ignore-buffers-re "^\\*")
-           '(uniquify-buffer-name-style 'post-forward-angle-brackets)))
+  :ensure
+  nil
+  :config
+  (custom-set-variables
+   '(uniquify-buffer-name-style 'reverse)
+   '(uniquify-separator "/")
+   '(uniquify-ignore-buffers-re "^\\*")
+   '(uniquify-buffer-name-style 'post-forward-angle-brackets)))
 
 (use-package drag-stuff
-  :init (drag-stuff-global-mode 1)
-  :bind (("M-p"  . drag-stuff-up)
-         ("M-<up>" . drag-stuff-up)
-         ("M-n" . drag-stuff-down)
-         ("M-<down>" . drag-stuff-down))
-  :diminish drag-stuff-mode)
+  :init
+  (drag-stuff-global-mode 1)
+  :bind
+  (("M-p"  . drag-stuff-up)
+   ("M-<up>" . drag-stuff-up)
+   ("M-n" . drag-stuff-down)
+   ("M-<down>" . drag-stuff-down))
+  :diminish
+  drag-stuff-mode)
 
 (use-package ido
-  :init (progn
-          (ido-mode t)
-          (ido-everywhere t))
-  :config (custom-set-variables
-           '(ido-use-filename-at-point 'guess)
-           '(ido-create-new-buffer 'always)
-           '(ido-enable-flex-matching t)))
+  :init
+  (ido-mode t)
+  (ido-everywhere t)
+  :config
+  (custom-set-variables
+   '(ido-use-filename-at-point 'guess)
+   '(ido-create-new-buffer 'always)
+   '(ido-enable-flex-matching t)))
 
 (use-package smex
-  :init (smex-initialize)
-  :bind ("M-x" . smex))
+  :init
+  (smex-initialize)
+  :bind
+  ("M-x" . smex))
 
 (use-package flycheck
-  :init (global-flycheck-mode)
-  :diminish flycheck-mode)
+  :init
+  (global-flycheck-mode)
+  :diminish
+  flycheck-mode)
 
 (use-package flycheck-cask
-  :init (add-hook 'flycheck-mode-hook 'flycheck-cask-setup))
+  :init
+  (add-hook 'flycheck-mode-hook 'flycheck-cask-setup))
 
 (use-package projectile
   :config
@@ -164,36 +185,49 @@
     (custom-set-variables
      '(projectile-tags-command "/opt/local/bin/ctags -Re %s %s"))))
 
+(use-package company-quickhelp
+  :init
+  (add-hook 'global-company-mode-hook #'company-quickhelp-mode))
+
 (use-package company
-  :init (progn
-          (use-package company-quickhelp
-            :init (add-hook 'global-company-mode-hook #'company-quickhelp-mode))
-          (global-company-mode))
-  :config (custom-set-variables '(company-idle-delay 0))
-  :diminish company-mode)
+  :init
+  (global-company-mode)
+  :config
+  (custom-set-variables '(company-idle-delay 0))
+  :diminish
+  company-mode)
+
 
 (use-package smart-tabs-mode
   :init
   (smart-tabs-insinuate 'c 'c++))
 
 (use-package python
-  :mode (("\\.py$" . python-mode)
-         ("wscript$" . python-mode)
-         ("SConstruct$" . python-mode)
-         ("SConscript$" . python-mode))
-  :config (custom-set-variables
-           '(tab-width 4)
-           '(python-indent-offset 4)))
+  :mode
+  (("\\.py$" . python-mode)
+   ("wscript$" . python-mode)
+   ("SConstruct$" . python-mode)
+   ("SConscript$" . python-mode))
+  :config
+  (custom-set-variables
+   '(tab-width 4)
+   '(python-indent-offset 4)))
 
 (use-package emacs-lisp-mode
-  :ensure nil
-  :bind ("M-." . find-function-at-point)
-  :interpreter ("emacs" . emacs-lisp-mode)
-  :mode ("Cask" . emacs-lisp-mode))
+  :ensure
+  nil
+  :bind
+  ("M-." . find-function-at-point)
+  :interpreter
+  ("emacs" . emacs-lisp-mode)
+  :mode
+  ("Cask" . emacs-lisp-mode))
 
 (use-package eldoc
-  :init (add-hook 'emacs-lisp-mode-hook 'turn-on-eldoc-mode)
-  :diminish eldoc-mode)
+  :init
+  (add-hook 'emacs-lisp-mode-hook 'turn-on-eldoc-mode)
+  :diminish
+  eldoc-mode)
 
 (use-package clojure-mode
   :init
@@ -207,22 +241,24 @@
        (">=" . ?≥)))))
 
 (use-package cider
-  :init (add-hook 'clojure-mode-hook #'cider-mode))
+  :init
+  (add-hook 'clojure-mode-hook #'cider-mode))
 
 (use-package cc-mode
-  :init (add-hook 'c-mode-hook (lambda () (progn
-                                       (c-set-style "k&r")
-                                       (c-set-offset 'case-label '+)
-                                       (c-toggle-auto-hungry-state 1))))
-  :config (progn
-            (custom-set-variables
-             '(indent-tabs-mode t)
-             '(c-basic-offset 4)
-             '(c-cleanup-list '(space-before-funcall
-                                brace-else-brace
-                                brace-elseif-brace
-                                comment-close-slash)))
-            (define-key c-mode-base-map (kbd "RET") 'c-context-line-break)))
+  :init
+  (add-hook 'c-mode-hook (lambda () (progn
+                                 (c-set-style "k&r")
+                                 (c-set-offset 'case-label '+)
+                                 (c-toggle-auto-hungry-state 1))))
+  :config
+  (custom-set-variables
+   '(indent-tabs-mode t)
+   '(c-basic-offset 4)
+   '(c-cleanup-list '(space-before-funcall
+                      brace-else-brace
+                      brace-elseif-brace
+                      comment-close-slash)))
+  (define-key c-mode-base-map (kbd "RET") 'c-context-line-break))
 
 (custom-set-variables
  '(auto-save-default nil)
