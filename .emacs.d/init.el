@@ -196,6 +196,8 @@
   :diminish eldoc-mode)
 
 (use-package clojure-mode
+  :init
+  (add-hook 'clojure-mode-hook #'smartparens-mode)
   :config
   (custom-set-variables
    '(clojure--prettify-symbols-alist
