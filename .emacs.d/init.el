@@ -179,6 +179,10 @@
   :init
   (add-hook 'flycheck-mode-hook 'flycheck-cask-setup))
 
+(use-package flycheck-clojure
+  :init
+  (add-hook 'flycheck-mode-hook 'flycheck-clojure-setup))
+
 (use-package projectile
   :config
   (when (eq system-type 'darwin)
