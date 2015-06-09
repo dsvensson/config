@@ -265,8 +265,7 @@
                       brace-else-brace
                       brace-elseif-brace
                       comment-close-slash)))
-  :bind
-  ("RET" . c-context-line-break))
+  (define-key c-mode-base-map (kbd "RET") 'c-context-line-break))
 
 (req-package-finish)
 
