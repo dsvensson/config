@@ -19,6 +19,7 @@
 (depends-on "paredit")
 (depends-on "pos-tip")
 (depends-on "projectile")
+(depends-on "req-package")
 (depends-on "smart-tabs-mode")
 (depends-on "smartparens")
 (depends-on "smex")

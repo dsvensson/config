@@ -4,11 +4,10 @@
 (add-to-list 'load-path "~/.emacs.d/vendor")
 (add-to-list 'custom-theme-load-path "~/.emacs.d/themes")
 
-(require 'use-package)
-
 (custom-set-variables
- '(use-package-verbose t)
- '(use-package-always-ensure t))
+ '(req-package-log-level 'info))
+
+(require 'req-package)
 
 (custom-set-variables
  '(inhibit-startup-message t)
@@ -89,11 +88,11 @@
 (which-function-mode t)
 (global-subword-mode t)
 
-(use-package hl-line
+(req-package hl-line
   :init
   (global-hl-line-mode t))
 
-(use-package linum
+(req-package linum
   :init
   (global-linum-mode t)
   :config
@@ -102,14 +101,14 @@
       (propertize (format (format " %%%dd " w) line) 'face 'linum)))
   (setq linum-format 'linum-format-func))
 
-(use-package idle-highlight-mode
+(req-package idle-highlight-mode
   :init
   (add-hook 'prog-mode-hook 'idle-highlight-mode)
   :config
   (custom-set-variables
    '(idle-highlight-idle-time 0.35)))
 
-(use-package whitespace
+(req-package whitespace
   :init
   (autoload 'global-whitespace-mode "whitespace")
   (global-whitespace-mode t)
@@ -119,7 +118,7 @@
   :diminish
   global-whitespace-mode)
 
-(use-package ws-butler
+(req-package ws-butler
   :init
   (ws-butler-global-mode)
   :config
@@ -128,13 +127,11 @@
   :diminish
   ws-butler-mode)
 
-(use-package pretty-symbols
+(req-package pretty-symbols
   :init
   (global-prettify-symbols-mode))
 
-(use-package uniquify
-  :ensure
-  nil
+(req-package uniquify
   :config
   (custom-set-variables
    '(uniquify-buffer-name-style 'reverse)
@@ -142,9 +139,9 @@
    '(uniquify-ignore-buffers-re "^\\*")
    '(uniquify-buffer-name-style 'post-forward-angle-brackets)))
 
-(use-package drag-stuff
+(req-package drag-stuff
   :init
-  (drag-stuff-global-mode 1)
+  (drag-stuff-global-mode t)
   :bind
   (("M-p"  . drag-stuff-up)
    ("M-<up>" . drag-stuff-up)
@@ -153,7 +150,7 @@
   :diminish
   drag-stuff-mode)
 
-(use-package ido
+(req-package ido
   :init
   (ido-mode t)
   (ido-everywhere t)
@@ -163,55 +160,58 @@
    '(ido-create-new-buffer 'always)
    '(ido-enable-flex-matching t)))
 
-(use-package smex
+(req-package smex
   :init
   (smex-initialize)
   :bind
   ("M-x" . smex))
 
-(use-package flycheck
+(req-package flycheck
   :init
   (global-flycheck-mode)
   :diminish
   flycheck-mode)
 
-(use-package flycheck-cask
+(req-package flycheck-cask
+  :require
+  (flycheck)
   :init
   (add-hook 'flycheck-mode-hook 'flycheck-cask-setup))
 
-(use-package flycheck-clojure
+(req-package flycheck-clojure
+  :require
+  (flycheck)
   :init
   (add-hook 'flycheck-mode-hook 'flycheck-clojure-setup))
 
-(use-package projectile
+(req-package projectile
   :config
   (when (eq system-type 'darwin)
     (custom-set-variables
      '(projectile-tags-command "/opt/local/bin/ctags -Re %s %s"))))
 
-(use-package company-quickhelp
+(req-package company
+  :require
+  (company-quickhelp)
   :init
-  (add-hook 'global-company-mode-hook #'company-quickhelp-mode))
-
-(use-package company
-  :init
+  (add-hook 'global-company-mode-hook #'company-quickhelp-mode)
   (global-company-mode)
   :config
   (custom-set-variables '(company-idle-delay 0))
   :diminish
   company-mode)
 
-(use-package smart-tabs-mode
+(req-package smart-tabs-mode
   :init
   (smart-tabs-insinuate 'c 'c++))
 
-(use-package smartparens
+(req-package smartparens
   :config
   (sp-use-paredit-bindings)
   :diminish
   smartparens-mode)
 
-(use-package python
+(req-package python
   :mode
   (("\\.py$" . python-mode)
    ("wscript$" . python-mode)
@@ -222,11 +222,11 @@
    '(tab-width 4)
    '(python-indent-offset 4)))
 
-(use-package emacs-lisp-mode
-  :ensure
-  nil
+(req-package emacs-lisp-mode
+  :require (eldoc)
   :init
   (add-hook 'emacs-lisp-mode-hook #'smartparens-mode)
+  (add-hook 'emacs-lisp-mode-hook #'turn-on-eldoc-mode)
   :bind
   ("M-." . find-function-at-point)
   :interpreter
@@ -234,14 +234,14 @@
   :mode
   ("Cask" . emacs-lisp-mode))
 
-(use-package eldoc
-  :init
-  (add-hook 'emacs-lisp-mode-hook 'turn-on-eldoc-mode)
+(req-package eldoc
   :diminish
   eldoc-mode)
 
-(use-package clojure-mode
+(req-package clojure-mode
+  :require (cider smartparens pretty-symbols flycheck-clojure)
   :init
+  (add-hook 'clojure-mode-hook #'cider-mode)
   (add-hook 'clojure-mode-hook #'smartparens-mode)
   :config
   (custom-set-variables
@@ -251,11 +251,7 @@
        ("<=" . ?≤)
        (">=" . ?≥)))))
 
-(use-package cider
-  :init
-  (add-hook 'clojure-mode-hook #'cider-mode))
-
-(use-package cc-mode
+(req-package cc-mode
   :init
   (add-hook 'c-mode-hook (lambda () (progn
                                  (c-set-style "k&r")
@@ -269,7 +265,10 @@
                       brace-else-brace
                       brace-elseif-brace
                       comment-close-slash)))
-  (define-key c-mode-base-map (kbd "RET") 'c-context-line-break))
+  :bind
+  ("RET" . c-context-line-break))
+
+(req-package-finish)
 
 (custom-set-variables
  '(auto-save-default nil)
