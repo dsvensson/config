@@ -201,10 +201,15 @@
   :diminish
   company-mode)
 
-
 (use-package smart-tabs-mode
   :init
   (smart-tabs-insinuate 'c 'c++))
+
+(use-package smartparens
+  :config
+  (sp-use-paredit-bindings)
+  :diminish
+  smartparens-mode)
 
 (use-package python
   :mode
@@ -220,6 +225,8 @@
 (use-package emacs-lisp-mode
   :ensure
   nil
+  :init
+  (add-hook 'emacs-lisp-mode-hook #'smartparens-mode)
   :bind
   ("M-." . find-function-at-point)
   :interpreter
