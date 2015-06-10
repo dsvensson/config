@@ -3,6 +3,7 @@
 (source gnu)
 
 (depends-on "cider")
+(depends-on "clj-refactor")
 (depends-on "company")
 (depends-on "company-irony")
 (depends-on "company-quickhelp")

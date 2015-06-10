@@ -223,7 +223,8 @@
    '(python-indent-offset 4)))
 
 (req-package emacs-lisp-mode
-  :require (eldoc)
+  :require
+  (eldoc)
   :init
   (add-hook 'emacs-lisp-mode-hook #'smartparens-mode)
   (add-hook 'emacs-lisp-mode-hook #'turn-on-eldoc-mode)
@@ -239,7 +240,8 @@
   eldoc-mode)
 
 (req-package clojure-mode
-  :require (cider smartparens pretty-symbols flycheck-clojure)
+  :require
+  (cider clj-refactor flycheck-clojure pretty-symbols smartparens)
   :init
   (add-hook 'clojure-mode-hook #'cider-mode)
   (add-hook 'clojure-mode-hook #'smartparens-mode)
