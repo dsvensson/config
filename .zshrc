@@ -11,4 +11,7 @@ plugins=(git emacs)
 
 export PATH=$HOME/bin:/usr/local/bin:$PATH
 
+export LESSOPEN="| /usr/bin/src-hilite-lesspipe.sh %s"
+export LESS=' -R '
+
 source $ZSH/oh-my-zsh.sh
