@@ -269,6 +269,10 @@
                       comment-close-slash)))
   (define-key c-mode-base-map (kbd "RET") 'c-context-line-break))
 
+(req-package groovy-mode
+    :mode (("\\.groovy$" . groovy-mode)
+           ("\\.gradle$" . groovy-mode)))
+
 (req-package-finish)
 
 (custom-set-variables
