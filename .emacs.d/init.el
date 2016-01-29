@@ -253,21 +253,22 @@
        ("<=" . ?≤)
        (">=" . ?≥)))))
 
+(defconst custom-c-style
+  '((tab-width . 4)
+    (indent-tabs-mode . t)
+    (c-offsets-alist . ((case-label . +)))
+    (c-cleanup-list . (space-before-funcall
+                       brace-else-brace
+                       brace-elseif-brace
+                       comment-close-slash))))
+
 (req-package cc-mode
-  :init
-  (add-hook 'c-mode-hook (lambda () (progn
-                                 (c-set-style "k&r")
-                                 (c-set-offset 'case-label '+)
-                                 (c-toggle-auto-hungry-state 1))))
   :config
-  (custom-set-variables
-   '(indent-tabs-mode t)
-   '(c-basic-offset 4)
-   '(c-cleanup-list '(space-before-funcall
-                      brace-else-brace
-                      brace-elseif-brace
-                      comment-close-slash)))
-  (define-key c-mode-base-map (kbd "RET") 'c-context-line-break))
+  (bind-key "<return>" 'c-context-line-break c-mode-base-map)
+  (c-add-style "custom-c-style" custom-c-style)
+  (add-hook 'c-mode-common-hook (lambda ()
+                                  (c-toggle-auto-hungry-state 1)
+                                  (c-set-style "custom-c-style"))))
 
 (req-package groovy-mode
     :mode (("\\.groovy$" . groovy-mode)
