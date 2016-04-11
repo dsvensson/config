@@ -1,5 +1,10 @@
-(require 'cask "~/.cask/cask.el")
-(cask-initialize)
+(require 'package)
+
+(add-to-list 'package-archives
+             '("melpa" . "https://melpa.org/packages/")
+             '("gnu" . "http://elpa.gnu.org/packages/"))
+
+(package-initialize)
 
 (add-to-list 'load-path "~/.emacs.d/vendor")
 (add-to-list 'custom-theme-load-path "~/.emacs.d/themes")
