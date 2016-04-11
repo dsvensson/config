@@ -93,6 +93,10 @@
 (which-function-mode t)
 (global-subword-mode t)
 
+(req-package zenburn-theme)
+
+(req-package solarized-theme)
+
 (req-package hl-line
   :init
   (global-hl-line-mode t))
