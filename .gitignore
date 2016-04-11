@@ -1,3 +1,5 @@
-.emacs.d/.cask
+.emacs.d/auto-save-list
+.emacs.d/elpa
+.emacs.d/smex-items
 .vim/autoload
 .vim/plugged
