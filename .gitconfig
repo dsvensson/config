@@ -10,3 +10,5 @@
 	rebase = true
 [alias]
 	bump = "!f() { git add $1 && message=$(echo \"Bump $1\n\"; git submodule summary $1) && git commit -e -m \"${message}\" ; }; f"
+[gpg]
+	program = gpg2
