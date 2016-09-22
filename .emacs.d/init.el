@@ -269,15 +269,22 @@
     (c-cleanup-list . (space-before-funcall
                        brace-else-brace
                        brace-elseif-brace
-                       comment-close-slash))))
+                       comment-close-slash
+                       defun-close-semi))))
 
 (req-package cc-mode
   :config
-  (bind-key "<return>" 'c-context-line-break c-mode-base-map)
   (c-add-style "custom-c-style" custom-c-style)
-  (add-hook 'c-mode-common-hook (lambda ()
-                                  (c-toggle-auto-hungry-state 1)
-                                  (c-set-style "custom-c-style"))))
+  (add-hook 'c-mode-common-hook
+            (lambda ()
+              ;; (add-to-list 'electric-layout-rules '(?{ . around))
+              ;; (add-to-list 'electric-pair-pairs '(?{ . ?}))
+              (electric-layout-mode 1)
+              (electric-pair-mode 1)
+              (c-toggle-auto-hungry-state 1)
+              (c-set-style "custom-c-style")))
+  :bind (:map c-mode-base-map
+              ("<return>" . c-context-line-break)))
 
 (req-package groovy-mode
     :mode (("\\.groovy$" . groovy-mode)
