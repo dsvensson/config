@@ -290,6 +290,18 @@
   :mode (("\\.groovy$" . groovy-mode)
          ("\\.gradle$" . groovy-mode)))
 
+(req-package windmove
+  :bind (("C-s-<left>"  . windmove-left)
+         ("C-s-<right>" . windmove-right)
+         ("C-s-<up>"    . windmove-up)
+         ("C-s-<down>"  . windmove-down)))
+
+(req-package buffer-move
+  :bind (("C-s-<s-left>" . buf-move-left)
+         ("C-s-<s-right>" . buf-move-right)
+         ("C-s-<s-up>" . buf-move-up)
+         ("C-s-<s-down>" . buf-move-down)))
+
 (req-package-finish)
 
 (custom-set-variables
