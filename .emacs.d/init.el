@@ -287,8 +287,8 @@
               ("<return>" . c-context-line-break)))
 
 (req-package groovy-mode
-    :mode (("\\.groovy$" . groovy-mode)
-           ("\\.gradle$" . groovy-mode)))
+  :mode (("\\.groovy$" . groovy-mode)
+         ("\\.gradle$" . groovy-mode)))
 
 (req-package-finish)
 
