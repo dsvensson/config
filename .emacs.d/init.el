@@ -210,6 +210,9 @@
   :diminish
   company-mode)
 
+(req-package company-jedi
+  :config (add-to-list 'company-backends 'company-jedi))
+
 (req-package smart-tabs-mode
   :init
   (smart-tabs-insinuate 'c 'c++))
