@@ -1,7 +1,7 @@
 [user]
 	email = dsvensson@gmail.com
 	name = Daniel Svensson
-	signingkey = 633F5931
+	signingkey = 01F6C8527F450E59
 [log]
 	decorate = short
 [diff]
@@ -12,3 +12,5 @@
 	bump = "!f() { git add $1 && message=$(echo \"Bump $1\n\"; git submodule summary $1) && git commit -e -m \"${message}\" ; }; f"
 [gpg]
 	program = gpg2
+[commit]
+	gpgsign = true
