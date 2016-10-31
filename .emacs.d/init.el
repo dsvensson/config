@@ -47,15 +47,15 @@
     ;; http://www.proggyfonts.com/index.php?menu=download
     ;; (set-default-font "ProggyCleanTTSZ 12")
     ;; (set-face-font 'tooltip "ProggyCleanTTSZ 12")
-    (set-frame-font "Inconsolata 14")
-    (set-face-font 'tooltip "Inconsolata 14")
+    (set-frame-font "Inconsolata 16")
+    (set-face-font 'tooltip "Inconsolata 16")
 
     ;; Silkscreen:
     ;; http://kottke.org/plus/type/silkscreen
     ;; (set-face-font 'mode-line "Silkscreen 6")
     ;; (set-face-font 'mode-line-inactive "Silkscreen 6")))
-    (set-face-font 'mode-line "Inconsolata 14")
-    (set-face-font 'mode-line-inactive "Inconsolata 14")))
+    (set-face-font 'mode-line "Inconsolata 16")
+    (set-face-font 'mode-line-inactive "Inconsolata 16")))
 
 ;; Patch some colors in themes
 (defadvice load-theme (after fixup-face activate)
