@@ -251,10 +251,12 @@
 
 (req-package emacs-lisp-mode
   :require
-  (eldoc)
+  (eldoc flycheck)
   :init
   (add-hook 'emacs-lisp-mode-hook #'smartparens-mode)
   (add-hook 'emacs-lisp-mode-hook #'turn-on-eldoc-mode)
+  (add-hook 'emacs-lisp-mode-hook
+            (lambda () (add-to-list 'flycheck-disabled-checkers 'emacs-lisp-checkdoc)))
   :bind
   ("M-." . find-function-at-point)
   :interpreter
