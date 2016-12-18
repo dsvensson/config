@@ -202,14 +202,27 @@
     (custom-set-variables
      '(projectile-tags-command "/opt/local/bin/ctags -Re %s %s"))))
 
+(req-package company-flx
+  :init
+  (company-flx-mode +1)
+  :config
+  (custom-set-variables '(company-flx-limit 15)))
+
+(req-package company-quickhelp
+  :config
+  (custom-set-variables '(company-quickhelp-delay 0.05)))
+
 (req-package company
   :require
-  (company-quickhelp)
+  (company-quickhelp company-flx)
   :init
   (add-hook 'global-company-mode-hook #'company-quickhelp-mode)
-  (global-company-mode)
+  (add-hook 'after-init-hook 'global-company-mode)
   :config
-  (custom-set-variables '(company-idle-delay 0))
+  (custom-set-variables '(company-idle-delay 0.3))
+  :bind
+  (:map company-active-map
+        ("<tab>" . company-complete-common-or-cycle))
   :diminish
   company-mode)
 
