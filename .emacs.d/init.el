@@ -96,6 +96,8 @@
 (which-function-mode t)
 (global-subword-mode t)
 
+(req-package auto-package-update)
+
 (req-package zenburn-theme)
 
 (req-package solarized-theme)
