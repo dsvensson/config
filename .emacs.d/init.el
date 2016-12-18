@@ -312,6 +312,17 @@
   :bind (:map c-mode-base-map
               ("<return>" . c-context-line-break)))
 
+(defconst custom-go-style
+  '((tab-width . 2)))
+
+(req-package go-mode
+  :require
+  (flycheck flycheck-gometalinter company-go)
+  :config
+  (c-add-style "custom-go-style" custom-go-style)
+  (add-hook 'before-save-hook 'gofmt-before-save)
+  (add-to-list 'company-backends 'company-go))
+
 (req-package groovy-mode
   :mode (("\\.groovy$" . groovy-mode)
          ("\\.gradle$" . groovy-mode)))
