@@ -6,6 +6,8 @@
 
 (package-initialize)
 
+(setq custom-file "~/.emacs.d/custom.el")
+
 (add-to-list 'load-path "~/.emacs.d/vendor")
 (add-to-list 'custom-theme-load-path "~/.emacs.d/themes")
 
