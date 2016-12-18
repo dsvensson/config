@@ -200,6 +200,13 @@
   :init
   (add-hook 'flycheck-mode-hook 'flycheck-clojure-setup))
 
+(req-package flycheck-rust
+  :defer t
+  :init
+  (add-hook 'rust-mode-hook
+            (lambda ()
+              (add-hook 'flycheck-mode-hook #'flycheck-rust-setup))))
+
 (req-package projectile
   :config
   (when (eq system-type 'darwin)
@@ -326,9 +333,10 @@
   (add-to-list 'company-backends 'company-go))
 
 (req-package racer
-  :diminish
-  racer-mode
+  :defer t
+  :diminish racer-mode
   :init
+  (add-hook 'rust-mode-hook #'racer-mode)
   :config
   (let* ((sysroot (string-trim (shell-command-to-string "rustc --print sysroot")))
          (srcpath (concat sysroot "/lib/rustlib/src/rust/src")))
@@ -337,20 +345,15 @@
      '(rust-format-on-save t))))
 
 (req-package cargo
-  :diminish
-  cargo-minor-mode
+  :defer t
+  :diminish cargo-minor-mode
   :init
   (add-hook 'rust-mode-hook #'cargo-minor-mode))
 
-(req-package flycheck-rust
-  :init
-  (add-hook 'flycheck-mode-hook #'flycheck-rust-setup))
-
 (req-package rust-mode
-  :require
-  (company-rust flycheck-rust cargo)
+  :mode "\\.rs\\'"
   :init
-  (add-hook 'racer-mode-hook
+  (add-hook 'rust-mode-hook
             (lambda ()
               (add-hook 'before-save-hook 'rust-format-buffer nil t))))
 
