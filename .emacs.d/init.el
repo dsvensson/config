@@ -325,6 +325,35 @@
   (add-hook 'before-save-hook 'gofmt-before-save)
   (add-to-list 'company-backends 'company-go))
 
+(req-package racer
+  :diminish
+  racer-mode
+  :init
+  :config
+  (let* ((sysroot (string-trim (shell-command-to-string "rustc --print sysroot")))
+         (srcpath (concat sysroot "/lib/rustlib/src/rust/src")))
+    (custom-set-variables
+     `(racer-rust-src-path ,srcpath)
+     '(rust-format-on-save t))))
+
+(req-package cargo
+  :diminish
+  cargo-minor-mode
+  :init
+  (add-hook 'rust-mode-hook #'cargo-minor-mode))
+
+(req-package flycheck-rust
+  :init
+  (add-hook 'flycheck-mode-hook #'flycheck-rust-setup))
+
+(req-package rust-mode
+  :require
+  (company-rust flycheck-rust cargo)
+  :init
+  (add-hook 'racer-mode-hook
+            (lambda ()
+              (add-hook 'before-save-hook 'rust-format-buffer nil t))))
+
 (req-package groovy-mode
   :mode (("\\.groovy$" . groovy-mode)
          ("\\.gradle$" . groovy-mode)))
