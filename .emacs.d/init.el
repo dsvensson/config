@@ -17,7 +17,8 @@
 (custom-set-variables
  '(inhibit-startup-message t)
  '(inhibit-startup-echo-area-message t)
- '(initial-scratch-message nil))
+ '(initial-scratch-message nil)
+ '(tab-width 4))
 
 (if (functionp 'menu-bar-mode)
     (menu-bar-mode -1))
@@ -231,7 +232,6 @@
    ("SConscript$" . python-mode))
   :config
   (custom-set-variables
-   '(tab-width 4)
    '(python-indent-offset 4)))
 
 (req-package emacs-lisp-mode
