@@ -251,6 +251,10 @@
   :diminish
   eldoc-mode)
 
+(req-package markdown-mode
+  :mode (("\\.md\\'"       . markdown-mode)
+         ("\\.markdown\\'" . markdown-mode)))
+
 (req-package clojure-mode
   :require
   (cider clj-refactor flycheck-clojure pretty-symbols smartparens)
