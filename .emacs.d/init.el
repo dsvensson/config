@@ -98,6 +98,8 @@
 
 (req-package auto-package-update)
 
+(req-package magit)
+
 (req-package zenburn-theme)
 
 (req-package solarized-theme)
