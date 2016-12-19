@@ -14,7 +14,12 @@
 (custom-set-variables
  '(req-package-log-level 'info))
 
-(require 'req-package)
+(condition-case err
+    (require 'req-package)
+  (error (progn
+       (package-refresh-contents)
+       (package-install 'req-package)
+       (require 'req-package))))
 
 (custom-set-variables
  '(inhibit-startup-message t)
