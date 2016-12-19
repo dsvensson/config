@@ -110,13 +110,12 @@
 (req-package solarized-theme)
 
 (req-package hl-line
-  :init
+  :config
   (global-hl-line-mode t))
 
 (req-package linum
-  :init
-  (global-linum-mode t)
   :config
+  (global-linum-mode t)
   (defun linum-format-func (line)
     (let ((w (length (number-to-string (count-lines (point-min) (point-max))))))
       (propertize (format (format " %%%dd " w) line) 'face 'linum)))
@@ -132,24 +131,23 @@
 (req-package whitespace
   :init
   (autoload 'global-whitespace-mode "whitespace")
-  (global-whitespace-mode t)
   :config
+  (global-whitespace-mode t)
   (custom-set-variables
    '(whitespace-style '(face tabs trailing space-before-tab)))
   :diminish
   global-whitespace-mode)
 
 (req-package ws-butler
-  :init
-  (ws-butler-global-mode)
   :config
+  (ws-butler-global-mode)
   (custom-set-variables
    '(ws-butler-keep-whitespace-before-point nil))
   :diminish
   ws-butler-mode)
 
 (req-package pretty-symbols
-  :init
+  :config
   (global-prettify-symbols-mode))
 
 (req-package uniquify
@@ -161,7 +159,7 @@
    '(uniquify-buffer-name-style 'post-forward-angle-brackets)))
 
 (req-package drag-stuff
-  :init
+  :config
   (drag-stuff-global-mode t)
   :bind
   (("M-p"  . drag-stuff-up)
@@ -172,32 +170,25 @@
   drag-stuff-mode)
 
 (req-package ido
-  :init
+  :config
   (ido-mode t)
   (ido-everywhere t)
-  :config
   (custom-set-variables
    '(ido-use-filename-at-point 'guess)
    '(ido-create-new-buffer 'always)
    '(ido-enable-flex-matching t)))
 
 (req-package smex
-  :init
+  :config
   (smex-initialize)
   :bind
   ("M-x" . smex))
 
 (req-package flycheck
-  :init
+  :config
   (global-flycheck-mode)
   :diminish
   flycheck-mode)
-
-(req-package flycheck-cask
-  :require
-  (flycheck)
-  :init
-  (add-hook 'flycheck-mode-hook 'flycheck-cask-setup))
 
 (req-package flycheck-clojure
   :require
@@ -219,9 +210,8 @@
      '(projectile-tags-command "/opt/local/bin/ctags -Re %s %s"))))
 
 (req-package company-flx
-  :init
-  (company-flx-mode +1)
   :config
+  (company-flx-mode +1)
   (custom-set-variables '(company-flx-limit 15)))
 
 (req-package company-quickhelp
@@ -246,7 +236,7 @@
   :config (add-to-list 'company-backends 'company-jedi))
 
 (req-package smart-tabs-mode
-  :init
+  :config
   (smart-tabs-insinuate 'c 'c++))
 
 (req-package smartparens
