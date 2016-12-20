@@ -135,16 +135,14 @@
   (global-whitespace-mode t)
   (custom-set-variables
    '(whitespace-style '(face tabs trailing space-before-tab)))
-  :diminish
-  global-whitespace-mode)
+  :diminish global-whitespace-mode)
 
 (req-package ws-butler
   :config
   (ws-butler-global-mode)
   (custom-set-variables
    '(ws-butler-keep-whitespace-before-point nil))
-  :diminish
-  ws-butler-mode)
+  :diminish ws-butler-mode)
 
 (req-package pretty-symbols
   :config
@@ -161,13 +159,11 @@
 (req-package drag-stuff
   :config
   (drag-stuff-global-mode t)
-  :bind
-  (("M-p"  . drag-stuff-up)
-   ("M-<up>" . drag-stuff-up)
-   ("M-n" . drag-stuff-down)
-   ("M-<down>" . drag-stuff-down))
-  :diminish
-  drag-stuff-mode)
+  :bind (("M-p"      . drag-stuff-up)
+         ("M-<up>"   . drag-stuff-up)
+         ("M-n"      . drag-stuff-down)
+         ("M-<down>" . drag-stuff-down))
+  :diminish drag-stuff-mode)
 
 (req-package ido
   :config
@@ -181,16 +177,16 @@
 (req-package smex
   :config
   (smex-initialize)
-  :bind
-  ("M-x" . smex))
+  :bind ("M-x" . smex))
 
 (req-package flycheck
+  :defer t
   :config
   (global-flycheck-mode)
-  :diminish
-  flycheck-mode)
+  :diminish flycheck-mode)
 
 (req-package flycheck-clojure
+  :defer t
   :require
   (flycheck)
   :init
@@ -210,11 +206,13 @@
      '(projectile-tags-command "/opt/local/bin/ctags -Re %s %s"))))
 
 (req-package company-flx
+  :defer t
   :config
   (company-flx-mode +1)
   (custom-set-variables '(company-flx-limit 15)))
 
 (req-package company-quickhelp
+  :defer t
   :config
   (custom-set-variables '(company-quickhelp-delay 0.05)))
 
@@ -226,13 +224,12 @@
   (add-hook 'after-init-hook 'global-company-mode)
   :config
   (custom-set-variables '(company-idle-delay 0.3))
-  :bind
-  (:map company-active-map
-        ("<tab>" . company-complete-common-or-cycle))
-  :diminish
-  company-mode)
+  :bind (:map company-active-map
+              ("<tab>" . company-complete-common-or-cycle))
+  :diminish company-mode)
 
 (req-package company-jedi
+  :defer t
   :config (add-to-list 'company-backends 'company-jedi))
 
 (req-package smart-tabs-mode
@@ -242,8 +239,7 @@
 (req-package smartparens
   :config
   (sp-use-paredit-bindings)
-  :diminish
-  smartparens-mode)
+  :diminish smartparens-mode)
 
 (req-package elpy
   :defer t
@@ -255,38 +251,32 @@
 
 (req-package python
   :require (elpy)
-  :mode
-  (("\\.py$" . python-mode)
-   ("wscript$" . python-mode)
-   ("SConstruct$" . python-mode)
-   ("SConscript$" . python-mode)))
+  :mode (("\\.py$" . python-mode)
+         ("wscript$" . python-mode)
+         ("SConstruct$" . python-mode)
+         ("SConscript$" . python-mode)))
+
+(req-package eldoc
+  :defer t
+  :diminish eldoc-mode)
 
 (req-package emacs-lisp-mode
-  :require
-  (eldoc flycheck)
+  :mode "\\.el\\'"
+  :require (eldoc flycheck)
   :init
   (add-hook 'emacs-lisp-mode-hook #'smartparens-mode)
   (add-hook 'emacs-lisp-mode-hook #'turn-on-eldoc-mode)
   (add-hook 'emacs-lisp-mode-hook
             (lambda () (add-to-list 'flycheck-disabled-checkers 'emacs-lisp-checkdoc)))
-  :bind
-  ("M-." . find-function-at-point)
-  :interpreter
-  ("emacs" . emacs-lisp-mode)
-  :mode
-  ("Cask" . emacs-lisp-mode))
-
-(req-package eldoc
-  :diminish
-  eldoc-mode)
+  :bind ("M-." . find-function-at-point)
+  :interpreter ("emacs" . emacs-lisp-mode))
 
 (req-package markdown-mode
-  :mode (("\\.md\\'"       . markdown-mode)
-         ("\\.markdown\\'" . markdown-mode)))
+  :mode ("\\.md\\'" "\\.markdown\\'"))
 
 (req-package clojure-mode
-  :require
-  (cider clj-refactor flycheck-clojure pretty-symbols smartparens)
+  :mode ("\\.clj\\'" "\\.cljc\\'" "\\.cljs\\'" "\\.cljx\\'" "\\.edn\\'")
+  :require (cider clj-refactor flycheck-clojure pretty-symbols smartparens)
   :init
   (add-hook 'clojure-mode-hook #'cider-mode)
   (add-hook 'clojure-mode-hook #'smartparens-mode)
@@ -309,6 +299,7 @@
                        defun-close-semi))))
 
 (req-package cc-mode
+  :mode ("\\.c\\'" "\\.cc\\'" "\\.cpp\\'" "\\.h\\'" "\\.hh\\'" "\\.hpp\\'")
   :config
   (c-add-style "custom-c-style" custom-c-style)
   (add-hook 'c-mode-common-hook
@@ -326,8 +317,8 @@
   '((tab-width . 2)))
 
 (req-package go-mode
-  :require
-  (flycheck flycheck-gometalinter company-go)
+  :mode ("\\.go\\'")
+  :require (flycheck flycheck-gometalinter company-go)
   :config
   (c-add-style "custom-go-style" custom-go-style)
   (add-hook 'before-save-hook 'gofmt-before-save)
@@ -352,14 +343,13 @@
   (add-hook 'rust-mode-hook #'cargo-minor-mode))
 
 (req-package rust-mode
-  :mode "\\.rs\\'"
+  :mode "\\.rs$"
   :config
   (custom-set-variables
    '(rust-format-on-save t)))
 
 (req-package groovy-mode
-  :mode (("\\.groovy$" . groovy-mode)
-         ("\\.gradle$" . groovy-mode)))
+  :mode ("\\.groovy$" "\\.gradle$"))
 
 (req-package windmove
   :bind (("C-s-<left>"  . windmove-left)
