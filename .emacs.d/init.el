@@ -343,8 +343,7 @@
   (let* ((sysroot (string-trim (shell-command-to-string "rustc --print sysroot")))
          (srcpath (concat sysroot "/lib/rustlib/src/rust/src")))
     (custom-set-variables
-     `(racer-rust-src-path ,srcpath)
-     '(rust-format-on-save t))))
+     `(racer-rust-src-path ,srcpath))))
 
 (req-package cargo
   :defer t
@@ -354,10 +353,9 @@
 
 (req-package rust-mode
   :mode "\\.rs\\'"
-  :init
-  (add-hook 'rust-mode-hook
-            (lambda ()
-              (add-hook 'before-save-hook 'rust-format-buffer nil t))))
+  :config
+  (custom-set-variables
+   '(rust-format-on-save t)))
 
 (req-package groovy-mode
   :mode (("\\.groovy$" . groovy-mode)
