@@ -245,15 +245,21 @@
   :diminish
   smartparens-mode)
 
+(req-package elpy
+  :defer t
+  :init
+  (add-hook 'python-mode-hook 'elpy-mode)
+  :config
+  (remove-hook 'elpy-modules 'elpy-module-flymake)
+  (remove-hook 'elpy-modules 'elpy-module-highlight-indentation))
+
 (req-package python
+  :require (elpy)
   :mode
   (("\\.py$" . python-mode)
    ("wscript$" . python-mode)
    ("SConstruct$" . python-mode)
-   ("SConscript$" . python-mode))
-  :config
-  (custom-set-variables
-   '(python-indent-offset 4)))
+   ("SConscript$" . python-mode)))
 
 (req-package emacs-lisp-mode
   :require
