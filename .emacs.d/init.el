@@ -261,7 +261,7 @@
   :diminish eldoc-mode)
 
 (req-package emacs-lisp-mode
-  :mode "\\.el\\'"
+  :mode "\\.el$"
   :require (eldoc flycheck)
   :init
   (add-hook 'emacs-lisp-mode-hook #'smartparens-mode)
@@ -272,10 +272,10 @@
   :interpreter ("emacs" . emacs-lisp-mode))
 
 (req-package markdown-mode
-  :mode ("\\.md\\'" "\\.markdown\\'"))
+  :mode ("\\.md$" "\\.markdown$"))
 
 (req-package clojure-mode
-  :mode ("\\.clj\\'" "\\.cljc\\'" "\\.cljs\\'" "\\.cljx\\'" "\\.edn\\'")
+  :mode ("\\.clj$" "\\.cljc$" "\\.cljs$" "\\.cljx$" "\\.edn$")
   :require (cider clj-refactor flycheck-clojure pretty-symbols smartparens)
   :init
   (add-hook 'clojure-mode-hook #'cider-mode)
@@ -298,8 +298,8 @@
                        comment-close-slash
                        defun-close-semi))))
 
-(req-package cc-mode
-  :mode ("\\.c\\'" "\\.cc\\'" "\\.cpp\\'" "\\.h\\'" "\\.hh\\'" "\\.hpp\\'")
+(req-package c-mode
+  :mode ("\\.c$" "\\.cc$" "\\.cpp$" "\\.h$" "\\.hh$" "\\.hpp$")
   :config
   (c-add-style "custom-c-style" custom-c-style)
   (add-hook 'c-mode-common-hook
@@ -317,7 +317,7 @@
   '((tab-width . 2)))
 
 (req-package go-mode
-  :mode ("\\.go\\'")
+  :mode "\\.go$"
   :require (flycheck flycheck-gometalinter company-go)
   :config
   (c-add-style "custom-go-style" custom-go-style)
