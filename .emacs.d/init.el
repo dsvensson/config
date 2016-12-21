@@ -12,7 +12,7 @@
 (add-to-list 'custom-theme-load-path "~/.emacs.d/themes")
 
 (custom-set-variables
- '(req-package-log-level 'info))
+ '(req-package-log-level 'debug))
 
 (condition-case err
     (require 'req-package)
@@ -105,9 +105,11 @@
 
 (req-package magit)
 
-(req-package zenburn-theme)
+(req-package zenburn-theme
+  :defer t)
 
-(req-package solarized-theme)
+(req-package solarized-theme
+  :defer t)
 
 (req-package hl-line
   :config
@@ -180,20 +182,20 @@
   :bind ("M-x" . smex))
 
 (req-package flycheck
-  :defer t
   :config
   (global-flycheck-mode)
   :diminish flycheck-mode)
 
 (req-package flycheck-clojure
-  :defer t
-  :require
-  (flycheck)
+  :require flycheck clojure-mode
   :init
   (add-hook 'flycheck-mode-hook 'flycheck-clojure-setup))
 
+(req-package flycheck-gometalinter
+  :require flycheck go-mode)
+
 (req-package flycheck-rust
-  :defer t
+  :require flycheck rust-mode
   :init
   (add-hook 'rust-mode-hook
             (lambda ()
@@ -206,19 +208,25 @@
      '(projectile-tags-command "/opt/local/bin/ctags -Re %s %s"))))
 
 (req-package company-flx
-  :defer t
+  :require company
   :config
   (company-flx-mode +1)
   (custom-set-variables '(company-flx-limit 15)))
 
+(req-package company-jedi
+  :require company python
+  :config
+  (add-to-list 'company-backends 'company-jedi))
+
+(req-package company-go
+  :require company go-mode)
+
 (req-package company-quickhelp
-  :defer t
+  :require company
   :config
   (custom-set-variables '(company-quickhelp-delay 0.05)))
 
 (req-package company
-  :require
-  (company-quickhelp company-flx)
   :init
   (add-hook 'global-company-mode-hook #'company-quickhelp-mode)
   (add-hook 'after-init-hook 'global-company-mode)
@@ -227,10 +235,6 @@
   :bind (:map company-active-map
               ("<tab>" . company-complete-common-or-cycle))
   :diminish company-mode)
-
-(req-package company-jedi
-  :defer t
-  :config (add-to-list 'company-backends 'company-jedi))
 
 (req-package smart-tabs-mode
   :config
@@ -242,7 +246,7 @@
   :diminish smartparens-mode)
 
 (req-package elpy
-  :defer t
+  :require python
   :init
   (add-hook 'python-mode-hook 'elpy-mode)
   :config
@@ -250,19 +254,16 @@
   (remove-hook 'elpy-modules 'elpy-module-highlight-indentation))
 
 (req-package python
-  :require (elpy)
-  :mode (("\\.py$" . python-mode)
-         ("wscript$" . python-mode)
+  :mode (("\\.py$"      . python-mode)
+         ("wscript$"    . python-mode)
          ("SConstruct$" . python-mode)
          ("SConscript$" . python-mode)))
 
 (req-package eldoc
-  :defer t
   :diminish eldoc-mode)
 
-(req-package emacs-lisp-mode
-  :mode "\\.el$"
-  :require (eldoc flycheck)
+(req-package lisp-mode
+  :mode ("\\.el$" . emacs-lisp-mode)
   :init
   (add-hook 'emacs-lisp-mode-hook #'smartparens-mode)
   (add-hook 'emacs-lisp-mode-hook #'turn-on-eldoc-mode)
@@ -272,11 +273,20 @@
   :interpreter ("emacs" . emacs-lisp-mode))
 
 (req-package markdown-mode
-  :mode ("\\.md$" "\\.markdown$"))
+  :mode ("\\.md$" "\\.mdown$" "\\.markdown$"))
+
+(req-package cider
+  :require clojure-mode)
+
+(req-package clj-refactor
+  :require cider)
 
 (req-package clojure-mode
-  :mode ("\\.clj$" "\\.cljc$" "\\.cljs$" "\\.cljx$" "\\.edn$")
-  :require (cider clj-refactor flycheck-clojure pretty-symbols smartparens)
+  :mode (("\\.clj$"  . clojure-mode)
+         ("\\.cljc$" . clojurec-mode)
+         ("\\.cljs$" . clojurescript-mode)
+         ("\\.cljx$" . clojurex-mode)
+         ("\\.edn$"  . clojure-mode))
   :init
   (add-hook 'clojure-mode-hook #'cider-mode)
   (add-hook 'clojure-mode-hook #'smartparens-mode)
@@ -298,8 +308,15 @@
                        comment-close-slash
                        defun-close-semi))))
 
-(req-package c-mode
-  :mode ("\\.c$" "\\.cc$" "\\.cpp$" "\\.h$" "\\.hh$" "\\.hpp$")
+(req-package cc-mode
+  :mode (("\\.c$"   . c++-mode)
+         ("\\.cc$"  . c++-mode)
+         ("\\.cpp$" . c++-mode)
+         ("\\.cxx$" . c++-mode)
+         ("\\.h$"   . c++-mode)
+         ("\\.hh$"  . c++-mode)
+         ("\\.hpp$" . c++-mode)
+         ("\\.hxx$" . c++-mode))
   :config
   (c-add-style "custom-c-style" custom-c-style)
   (add-hook 'c-mode-common-hook
@@ -318,15 +335,13 @@
 
 (req-package go-mode
   :mode "\\.go$"
-  :require (flycheck flycheck-gometalinter company-go)
   :config
   (c-add-style "custom-go-style" custom-go-style)
   (add-hook 'before-save-hook 'gofmt-before-save)
   (add-to-list 'company-backends 'company-go))
 
 (req-package racer
-  :defer t
-  :diminish racer-mode
+  :require rust-mode
   :init
   (add-hook 'rust-mode-hook #'racer-mode)
   :config
@@ -334,10 +349,11 @@
   (let* ((sysroot (string-trim (shell-command-to-string "rustc --print sysroot")))
          (srcpath (concat sysroot "/lib/rustlib/src/rust/src")))
     (custom-set-variables
-     `(racer-rust-src-path ,srcpath))))
+     `(racer-rust-src-path ,srcpath)))
+  :diminish racer-mode)
 
 (req-package cargo
-  :defer t
+  :require rust-mode
   :diminish cargo-minor-mode
   :init
   (add-hook 'rust-mode-hook #'cargo-minor-mode))
