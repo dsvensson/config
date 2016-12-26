@@ -107,6 +107,11 @@
 (which-function-mode t)
 (global-subword-mode t)
 
+(if (eq system-type 'darwin)
+    (req-package exec-path-from-shell
+      :init
+      (exec-path-from-shell-initialize)))
+
 (req-package auto-package-update)
 
 (req-package magit)
