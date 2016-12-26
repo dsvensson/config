@@ -75,7 +75,6 @@
 (defadvice load-theme (after fixup-face activate)
   (let ((color-orange "#ff8900")
         (color-red "#ff0000")
-        (color-linum "#92a0a0")
         (color-background nil)
         (color-background-darker nil)
         (color-background-darkest nil))
@@ -88,7 +87,6 @@
                           (setq color-background "#fcf6e4")
                           (setq color-background-darker "#e5dfcf")
                           (setq color-background-darkest "#f2ecdb"))))
-    (set-face-foreground 'linum color-linum)
     (set-face-underline 'hl-line  nil)
     (set-face-background 'hl-line color-background-darkest)
     (set-face-background 'whitespace-trailing color-red)
@@ -125,14 +123,6 @@
 (req-package hl-line
   :config
   (global-hl-line-mode t))
-
-(req-package linum
-  :config
-  (global-linum-mode t)
-  (defun linum-format-func (line)
-    (let ((w (length (number-to-string (count-lines (point-min) (point-max))))))
-      (propertize (format (format " %%%dd " w) line) 'face 'linum)))
-  (setq linum-format 'linum-format-func))
 
 (req-package idle-highlight-mode
   :init
