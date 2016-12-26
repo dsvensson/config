@@ -183,8 +183,12 @@
   :bind ("M-x" . smex))
 
 (req-package flycheck
-  :config
+  :init
   (global-flycheck-mode)
+  :config
+  (custom-set-variables
+   '(flycheck-idle-change-delay 1.5)
+   '(flycheck-check-syntax-automatically '(idle-change mode-enabled)))
   :diminish flycheck-mode)
 
 (req-package flycheck-clojure
