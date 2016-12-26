@@ -27,6 +27,14 @@
  '(initial-scratch-message nil)
  '(tab-width 4))
 
+(if (eq system-type 'darwin)
+    (custom-set-variables
+
+     '(mac-option-key-is-meta nil)
+     '(mac-command-key-is-meta t)
+     '(mac-command-modifier 'meta)
+     '(mac-option-modifier nil)))
+
 (if (functionp 'menu-bar-mode)
     (menu-bar-mode -1))
 (if (functionp 'tool-bar-mode)
@@ -406,10 +414,5 @@
 (global-set-key (kbd "C-y") 'yank-and-indent)
 (global-set-key [XF86Back] 'previous-buffer)
 (global-set-key [XF86Forward] 'next-buffer)
-
-(if (eq system-type 'darwin)
-    (custom-set-variables
-     '(mac-option-modifier 'meta)
-     '(mac-command-modifier 'hyper)))
 
 (load-theme 'zenburn t)
