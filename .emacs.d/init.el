@@ -52,12 +52,10 @@
 ;; Fonts
 (if (eq system-type 'darwin)
     (progn
-      (set-frame-font "Monaco 12")
-      (set-face-font 'mode-line "Monaco 10")
-      (set-face-font 'mode-line-inactive "Monaco 8")
-      (set-face-font 'tooltip "Monaco 12")
-      (custom-set-variables
-       '(ns-antialias-text t)))
+      (set-frame-font "Monaco 14")
+      (set-face-font 'mode-line "Monaco 14")
+      (set-face-font 'mode-line-inactive "Monaco 14")
+      (set-face-font 'tooltip "Monaco 14"))
   (progn
     ;; Proggy Clean:
     ;; http://www.proggyfonts.com/index.php?menu=download
