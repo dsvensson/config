@@ -197,7 +197,15 @@
   (add-hook 'flycheck-mode-hook 'flycheck-clojure-setup))
 
 (req-package flycheck-gometalinter
-  :require flycheck go-mode)
+  :require flycheck go-mode go-projectile
+  :init
+  (add-hook 'flycheck-mode-hook #'flycheck-gometalinter-setup)
+  :config
+  (custom-set-variables
+   '(flycheck-gometalinter-concurrency 4)
+   `(flycheck-gometalinter-executable ,(concat go-projectile-tools-path "/bin/gometalinter"))
+   ;; Disable flycheck built-in linters
+   '(flycheck-gometalinter-disable-linters '("gocyclo" "vet" "vetshadow" "gofmt" "golint" "test" "errcheck" "unconvert"))))
 
 (req-package flycheck-rust
   :require flycheck rust-mode
@@ -224,7 +232,10 @@
   (add-to-list 'company-backends 'company-jedi))
 
 (req-package company-go
-  :require company go-mode)
+  :require company go-mode go-projectile
+  :config
+  (custom-set-variables
+   `(company-go-gocode-command ,(concat go-projectile-tools-path "/bin/gocode"))))
 
 (req-package company-quickhelp
   :require company
@@ -335,6 +346,67 @@
   :bind (:map c-mode-base-map
               ("<return>" . c-context-line-break)))
 
+(req-package go-snippets
+  :require go-mode)
+
+(req-package go-projectile
+  :require go-mode
+  :config
+  (mapc (lambda (tool)
+          (add-to-list 'go-projectile-tools tool))
+        '((aligncheck   . "github.com/opennota/check/cmd/aligncheck")
+          (deadcode     . "github.com/tsenart/deadcode")
+          (dupl         . "github.com/mibk/dupl")
+          (gas          . "github.com/HewlettPackard/gas")
+          (goconst      . "github.com/jgautheron/goconst/cmd/goconst")
+          (gocyclo      . "github.com/alecthomas/gocyclo")
+          (godoc        . "golang.org/x/tools/cmd/godoc")
+          (godoctor     . "github.com/godoctor/godoctor")
+          (goimpl       . "github.com/sasha-s/goimpl/cmd/goimpl")
+          (gometalinter . "github.com/alecthomas/gometalinter")
+          (gosimple     . "honnef.co/go/simple/cmd/gosimple")
+          (gotype       . "golang.org/x/tools/cmd/gotype")
+          (ineffassign  . "github.com/gordonklaus/ineffassign")
+          (interfacer   . "github.com/mvdan/interfacer/cmd/interfacer")
+          (lll          . "github.com/walle/lll/cmd/lll")
+          (misspell     . "github.com/client9/misspell/cmd/misspell")
+          (staticcheck  . "honnef.co/go/staticcheck/cmd/staticcheck")
+          (structcheck  . "github.com/opennota/check/cmd/structcheck")
+          (unconvert    . "github.com/mdempsky/unconvert")
+          (unused       . "honnef.co/go/unused/cmd/unused")
+          (varcheck     . "github.com/opennota/check/cmd/varcheck")))
+  (let* ((system-path   (getenv "PATH"))
+         (go-tools-path (concat go-projectile-tools-path "/bin")))
+    (setenv "PATH" (concat system-path ":" go-tools-path)))
+  (custom-set-variables
+   `(flycheck-go-errcheck-executable ,(concat go-projectile-tools-path "/bin/errcheck"))
+   `(flycheck-go-golint-executable ,(concat go-projectile-tools-path "/bin/golint"))
+   `(flycheck-go-unconvert-executable ,(concat go-projectile-tools-path "/bin/unconvert"))
+   `(godef-command ,(concat go-projectile-tools-path "/bin/godef"))
+   `(godoc-command ,(concat go-projectile-tools-path "/bin/godoc"))
+   `(gofmt-command ,(concat go-projectile-tools-path "/bin/gofmt"))))
+
+(req-package godoctor
+  :require go-mode go-projectile
+  :config
+  (custom-set-variables
+   `(godoctor-executable ,(concat go-projectile-tools-path "/bin/godoctor"))))
+
+(req-package go-impl
+  :require go-mode)
+
+(req-package go-rename
+  :require go-mode go-projectile
+  :config
+  (custom-set-variables
+   `(go-rename-command ,(concat go-projectile-tools-path "/bin/gorename"))))
+
+(req-package go-guru
+  :require go-mode go-projectile
+  :config
+  (custom-set-variables
+   `(go-guru-command ,(concat go-projectile-tools-path "/bin/gocode"))))
+
 (defconst custom-go-style
   '((tab-width . 2)))
 
@@ -343,7 +415,11 @@
   :config
   (c-add-style "custom-go-style" custom-go-style)
   (add-hook 'before-save-hook 'gofmt-before-save)
-  (add-to-list 'company-backends 'company-go))
+  (add-to-list 'company-backends 'company-go)
+  :bind
+  (("C-c C-r" . go-remove-unused-imports)
+   ("C-c i"   . go-goto-imports)
+   ("M-."     . godef-jump)))
 
 (req-package racer
   :require rust-mode
