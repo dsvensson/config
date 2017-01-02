@@ -112,7 +112,9 @@
 
 (req-package auto-package-update)
 
-(req-package magit)
+(req-package magit
+  :bind
+  ("C-x g" . magit-status))
 
 (req-package zenburn-theme
   :defer t)
