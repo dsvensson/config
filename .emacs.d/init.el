@@ -129,6 +129,7 @@
   (global-hl-line-mode t))
 
 (req-package idle-highlight-mode
+  :diminish hi-lock-mode
   :init
   (add-hook 'prog-mode-hook 'idle-highlight-mode)
   :config
