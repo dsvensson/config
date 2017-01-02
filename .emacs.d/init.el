@@ -29,7 +29,6 @@
 
 (if (eq system-type 'darwin)
     (custom-set-variables
-
      '(mac-option-key-is-meta nil)
      '(mac-command-key-is-meta t)
      '(mac-command-modifier 'meta)
