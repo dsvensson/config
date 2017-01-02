@@ -102,7 +102,6 @@
 (auto-compression-mode t)
 (show-paren-mode t)
 (which-function-mode t)
-(global-subword-mode t)
 
 (if (eq system-type 'darwin)
     (req-package exec-path-from-shell
@@ -131,6 +130,11 @@
   :config
   (custom-set-variables
    '(idle-highlight-idle-time 0.35)))
+
+(req-package subword
+  :diminish subword-mode
+  :init
+  (global-subword-mode t))
 
 (req-package whitespace
   :init
