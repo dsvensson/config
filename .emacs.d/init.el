@@ -102,6 +102,7 @@
 (auto-compression-mode t)
 (show-paren-mode t)
 (which-function-mode t)
+(global-hi-lock-mode -1)
 
 (if (eq system-type 'darwin)
     (req-package exec-path-from-shell
