@@ -364,7 +364,6 @@
           (godoc        . "golang.org/x/tools/cmd/godoc")
           (godoctor     . "github.com/godoctor/godoctor")
           (goimpl       . "github.com/sasha-s/goimpl/cmd/goimpl")
-          (goimports    . "golang.org/x/tools/cmd/goimports")
           (gometalinter . "github.com/alecthomas/gometalinter")
           (gosimple     . "honnef.co/go/simple/cmd/gosimple")
           (gotype       . "golang.org/x/tools/cmd/gotype")
