@@ -410,9 +410,10 @@
 (req-package gotest
   :require go-mode
   :bind
-  (("C-c C-t t" . go-test-current-test)
-   ("C-c C-t f" . go-test-current-file)
-   ("C-c C-t p" . go-test-current-project)))
+  (:map go-mode-map
+        ("C-c C-t t" . go-test-current-test)
+        ("C-c C-t f" . go-test-current-file)
+        ("C-c C-t p" . go-test-current-project)))
 
 (defconst custom-go-style
   '((tab-width . 2)))
@@ -424,10 +425,11 @@
   (add-hook 'before-save-hook 'gofmt-before-save)
   (add-to-list 'company-backends 'company-go)
   :bind
-  (("C-c C-r" . go-remove-unused-imports)
-   ("C-c i"   . go-goto-imports)
-   ("M-."     . godef-jump)
-   ("M-*"     . pop-tag-mark)))
+  (:map go-mode-map
+        ("C-c C-r" . go-remove-unused-imports)
+        ("C-c i"   . go-goto-imports)
+        ("M-."     . godef-jump)
+        ("M-*"     . pop-tag-mark)))
 
 (req-package racer
   :require rust-mode
