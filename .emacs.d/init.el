@@ -367,9 +367,6 @@
   :bind (:map c-mode-base-map
               ("<return>" . c-context-line-break)))
 
-(req-package go-snippets
-  :require go-mode)
-
 (req-package go-projectile
   :require go-mode
   :config
