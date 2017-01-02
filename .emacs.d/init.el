@@ -377,9 +377,8 @@
           (unconvert    . "github.com/mdempsky/unconvert")
           (unused       . "honnef.co/go/unused/cmd/unused")
           (varcheck     . "github.com/opennota/check/cmd/varcheck")))
-  (let* ((system-path   (getenv "PATH"))
-         (go-tools-path (concat go-projectile-tools-path "/bin")))
-    (setenv "PATH" (concat system-path ":" go-tools-path)))
+  (go-projectile-tools-add-path)
+  (go-projectile-set-gopath)
   (custom-set-variables
    `(flycheck-go-errcheck-executable ,(concat go-projectile-tools-path "/bin/errcheck"))
    `(flycheck-go-golint-executable ,(concat go-projectile-tools-path "/bin/golint"))
