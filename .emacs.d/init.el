@@ -221,6 +221,12 @@
     (custom-set-variables
      '(projectile-tags-command "/opt/local/bin/ctags -Re %s %s"))))
 
+(req-package yasnippet
+  :require company
+  :diminish yas-minor-mode
+  :config
+  (yas-global-mode))
+
 (req-package company-flx
   :require company
   :config
@@ -418,12 +424,16 @@
 (defconst custom-go-style
   '((tab-width . 2)))
 
+(defun go-mode/company-backends ()
+  (let ((backends (make-local-variable 'company-backends)))
+    (set backends '((company-go :with company-yasnippet)))))
+
 (req-package go-mode
   :mode "\\.go$"
   :config
   (c-add-style "custom-go-style" custom-go-style)
   (add-hook 'before-save-hook 'gofmt-before-save)
-  (add-to-list 'company-backends 'company-go)
+  (add-hook 'go-mode-hook 'go-mode/company-backends)
   :bind
   (:map go-mode-map
         ("C-c C-r" . go-remove-unused-imports)
