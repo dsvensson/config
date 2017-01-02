@@ -408,7 +408,7 @@
   :require go-mode go-projectile
   :config
   (custom-set-variables
-   `(go-guru-command ,(concat go-projectile-tools-path "/bin/gocode"))))
+   `(go-guru-command ,(concat go-projectile-tools-path "/bin/guru"))))
 
 (defconst custom-go-style
   '((tab-width . 2)))
