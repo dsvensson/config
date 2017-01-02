@@ -249,6 +249,11 @@
   :config
   (custom-set-variables '(company-quickhelp-delay 0.05)))
 
+(req-package company-statistics
+  :require company
+  :init
+  (add-hook 'global-company-mode-hook #'company-statistics-mode))
+
 (req-package company
   :init
   (add-hook 'global-company-mode-hook #'company-quickhelp-mode)
