@@ -109,7 +109,10 @@
       :init
       (exec-path-from-shell-initialize)))
 
-(req-package auto-package-update)
+(req-package auto-package-update
+  :config
+  (custom-set-variables
+   '(auto-package-update-delete-old-versions t)))
 
 (req-package magit
   :bind
