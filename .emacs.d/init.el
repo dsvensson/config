@@ -408,6 +408,13 @@
   (custom-set-variables
    `(go-guru-command ,(concat go-projectile-tools-path "/bin/guru"))))
 
+(req-package gotest
+  :require go-mode
+  :bind
+  (("C-c C-t t" . go-test-current-test)
+   ("C-c C-t f" . go-test-current-file)
+   ("C-c C-t p" . go-test-current-project)))
+
 (defconst custom-go-style
   '((tab-width . 2)))
 
