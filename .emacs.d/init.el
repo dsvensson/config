@@ -365,6 +365,7 @@
           (godoc        . "golang.org/x/tools/cmd/godoc")
           (godoctor     . "github.com/godoctor/godoctor")
           (goimpl       . "github.com/sasha-s/goimpl/cmd/goimpl")
+          (goimports    . "golang.org/x/tools/cmd/goimports")
           (gometalinter . "github.com/alecthomas/gometalinter")
           (gosimple     . "honnef.co/go/simple/cmd/gosimple")
           (gotype       . "golang.org/x/tools/cmd/gotype")
@@ -386,7 +387,7 @@
    `(flycheck-go-unconvert-executable ,(concat go-projectile-tools-path "/bin/unconvert"))
    `(godef-command ,(concat go-projectile-tools-path "/bin/godef"))
    `(godoc-command ,(concat go-projectile-tools-path "/bin/godoc"))
-   `(gofmt-command ,(concat go-projectile-tools-path "/bin/gofmt"))))
+   `(gofmt-command ,(concat go-projectile-tools-path "/bin/goimports"))))
 
 (req-package godoctor
   :require go-mode go-projectile
