@@ -410,7 +410,9 @@
    `(godoctor-executable ,(concat go-projectile-tools-path "/bin/godoctor"))))
 
 (req-package go-impl
-  :require go-mode)
+  :require go-mode
+  (custom-set-variables
+   `(go-impl-command ,(concat go-projectile-tools-path "/bin/goimpl"))))
 
 (req-package go-rename
   :require go-mode go-projectile
