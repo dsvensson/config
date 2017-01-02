@@ -422,7 +422,8 @@
   :bind
   (("C-c C-r" . go-remove-unused-imports)
    ("C-c i"   . go-goto-imports)
-   ("M-."     . godef-jump)))
+   ("M-."     . godef-jump)
+   ("M-*"     . pop-tag-mark)))
 
 (req-package racer
   :require rust-mode
