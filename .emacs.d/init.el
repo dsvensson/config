@@ -201,6 +201,11 @@
    '(flycheck-check-syntax-automatically '(idle-change mode-enabled)))
   :diminish flycheck-mode)
 
+(req-package flycheck-pos-tip
+  :require flycheck
+  :init
+  (flycheck-pos-tip-mode))
+
 (req-package flycheck-clojure
   :require flycheck clojure-mode
   :init
