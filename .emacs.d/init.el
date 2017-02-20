@@ -261,6 +261,7 @@
   :require company go-mode go-projectile
   :config
   (custom-set-variables
+   '(company-go-show-annotation t)
    `(company-go-gocode-command ,(concat go-projectile-tools-path "/bin/gocode"))))
 
 (req-package company-quickhelp
