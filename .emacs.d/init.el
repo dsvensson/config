@@ -424,6 +424,7 @@
 
 (req-package go-impl
   :require go-mode
+  :config
   (custom-set-variables
    `(go-impl-command ,(concat go-projectile-tools-path "/bin/goimpl"))))
 
