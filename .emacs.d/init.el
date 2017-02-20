@@ -212,10 +212,20 @@
   (add-hook 'flycheck-mode-hook #'flycheck-gometalinter-setup)
   :config
   (custom-set-variables
-   '(flycheck-gometalinter-concurrency 4)
+   '(flycheck-gometalinter-concurrency 1)
+   '(flycheck-gometalinter-deadline "15s")
+   '(flycheck-gometalinter-vendor t)
    `(flycheck-gometalinter-executable ,(concat go-projectile-tools-path "/bin/gometalinter"))
    ;; Disable flycheck built-in linters
-   '(flycheck-gometalinter-disable-linters '("gocyclo" "vet" "vetshadow" "gofmt" "golint" "test" "errcheck" "unconvert"))))
+   '(flycheck-gometalinter-disable-linters '("errcheck"
+                                             "gocyclo"
+                                             "gofmt"
+                                             "golint"
+                                             "gotype"
+                                             "test"
+                                             "unconvert"
+                                             "vet"
+                                             "vetshadow"))))
 
 (req-package flycheck-rust
   :require flycheck rust-mode
