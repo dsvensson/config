@@ -256,7 +256,9 @@
 (req-package company-quickhelp
   :require company
   :config
-  (custom-set-variables '(company-quickhelp-delay 0.05)))
+  (custom-set-variables
+   '(company-quickhelp-use-propertized-text t)
+   '(company-quickhelp-delay 0.05)))
 
 (req-package company-statistics
   :require company
