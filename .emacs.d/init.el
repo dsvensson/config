@@ -211,6 +211,9 @@
   :init
   (add-hook 'flycheck-mode-hook 'flycheck-clojure-setup))
 
+(req-package flycheck-dialyzer
+  :require flycheck erlang)
+
 (req-package flycheck-gometalinter
   :require flycheck go-mode go-projectile
   :init
@@ -496,6 +499,10 @@
   :config
   (custom-set-variables
    '(rust-format-on-save t)))
+
+(req-package erlang
+  :mode (("\\.erl$" . erlang-mode)
+         ("\\.hrl$" . erlang-mode)))
 
 (req-package groovy-mode
   :mode ("\\.groovy$" "\\.gradle$"))
