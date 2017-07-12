@@ -510,9 +510,18 @@
   (custom-set-variables
    '(rust-format-on-save t)))
 
+(defun erlang/prettify-symbols ()
+  (add-to-list 'prettify-symbols-alist '("->" . ?⟶))
+  (prettify-symbols-mode t))
+
+(req-package erlang-eunit
+  :require erlang)
+
 (req-package erlang
   :mode (("\\.erl$" . erlang-mode)
-         ("\\.hrl$" . erlang-mode)))
+         ("\\.hrl$" . erlang-mode))
+  :init
+  (add-hook 'erlang-mode-hook 'erlang/prettify-symbols))
 
 (req-package groovy-mode
   :mode ("\\.groovy$" "\\.gradle$"))
