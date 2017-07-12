@@ -452,9 +452,14 @@
   :require go-mode
   :bind
   (:map go-mode-map
+        ("C-c C-t r" . go-run)
         ("C-c C-t t" . go-test-current-test)
         ("C-c C-t f" . go-test-current-file)
-        ("C-c C-t p" . go-test-current-project)))
+        ("C-c C-t p" . go-test-current-project)
+        ("C-c C-t c" . go-test-current-coverage))
+  :config
+  (custom-set-variables
+   '(go-test-verbose t)))
 
 (defconst custom-go-style
   '((tab-width . 2)))
@@ -463,12 +468,17 @@
   (let ((backends (make-local-variable 'company-backends)))
     (set backends '((company-go :with company-yasnippet)))))
 
+(defun go-mode/prettify-symbols ()
+  (add-to-list 'prettify-symbols-alist'("<-" . ?⟵))
+  (prettify-symbols-mode t))
+
 (req-package go-mode
   :mode "\\.go$"
   :config
   (c-add-style "custom-go-style" custom-go-style)
   (add-hook 'before-save-hook 'gofmt-before-save)
   (add-hook 'go-mode-hook 'go-mode/company-backends)
+  (add-hook 'go-mode-hook 'go-mode/prettify-symbols)
   :bind
   (:map go-mode-map
         ("C-c C-r" . go-remove-unused-imports)
