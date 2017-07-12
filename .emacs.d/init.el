@@ -523,6 +523,9 @@
   :init
   (add-hook 'erlang-mode-hook 'erlang/prettify-symbols))
 
+(req-package racket-mode
+  :mode (("\\.rkt" . racket-mode)))
+
 (req-package groovy-mode
   :mode ("\\.groovy$" "\\.gradle$"))
 
