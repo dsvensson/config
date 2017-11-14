@@ -229,8 +229,11 @@
                                              "gocyclo"
                                              "gofmt"
                                              "golint"
+                                             "gosimple"
                                              "gotype"
+                                             "megacheck"
                                              "test"
+                                             "unused"
                                              "unconvert"
                                              "vet"
                                              "vetshadow"))))
@@ -396,23 +399,30 @@
         '((aligncheck   . "github.com/opennota/check/cmd/aligncheck")
           (deadcode     . "github.com/tsenart/deadcode")
           (dupl         . "github.com/mibk/dupl")
+          (errcheck     . "github.com/kisielk/errcheck")
           (gas          . "github.com/HewlettPackard/gas")
+          (gocode       . "github.com/nsf/gocode")
           (goconst      . "github.com/jgautheron/goconst/cmd/goconst")
           (gocyclo      . "github.com/alecthomas/gocyclo")
           (godoc        . "golang.org/x/tools/cmd/godoc")
           (godoctor     . "github.com/godoctor/godoctor")
           (goimpl       . "github.com/sasha-s/goimpl/cmd/goimpl")
           (gometalinter . "github.com/alecthomas/gometalinter")
-          (gosimple     . "honnef.co/go/simple/cmd/gosimple")
+          (gosimple     . "honnef.co/go/tools/cmd/gosimple")
           (gotype       . "golang.org/x/tools/cmd/gotype")
           (ineffassign  . "github.com/gordonklaus/ineffassign")
-          (interfacer   . "github.com/mvdan/interfacer/cmd/interfacer")
+          (interfacer   . "mvdan.cc/interfacer")
           (lll          . "github.com/walle/lll/cmd/lll")
+          (maligned     . "github.com/mdempsky/maligned")
+          (megacheck    . "honnef.co/go/tools/cmd/megacheck")
           (misspell     . "github.com/client9/misspell/cmd/misspell")
-          (staticcheck  . "honnef.co/go/staticcheck/cmd/staticcheck")
+          (nakedret     . "github.com/alexkohler/nakedret")
+          (safesql      . "github.com/stripe/safesql")
+          (staticcheck  . "honnef.co/go/tools/cmd/staticcheck")
           (structcheck  . "github.com/opennota/check/cmd/structcheck")
           (unconvert    . "github.com/mdempsky/unconvert")
-          (unused       . "honnef.co/go/unused/cmd/unused")
+          (unparam      . "mvdan.cc/unparam")
+          (unused       . "honnef.co/go/tools/cmd/unused")
           (varcheck     . "github.com/opennota/check/cmd/varcheck")))
   (go-projectile-tools-add-path)
   (go-projectile-set-gopath)
@@ -420,6 +430,7 @@
    `(flycheck-go-errcheck-executable ,(concat go-projectile-tools-path "/bin/errcheck"))
    `(flycheck-go-golint-executable ,(concat go-projectile-tools-path "/bin/golint"))
    `(flycheck-go-unconvert-executable ,(concat go-projectile-tools-path "/bin/unconvert"))
+   `(flycheck-go-megacheck-executable ,(concat go-projectile-tools-path "/bin/megacheck"))
    `(godef-command ,(concat go-projectile-tools-path "/bin/godef"))
    `(godoc-command ,(concat go-projectile-tools-path "/bin/godoc"))
    `(gofmt-command ,(concat go-projectile-tools-path "/bin/goimports"))))
@@ -448,6 +459,9 @@
   (custom-set-variables
    `(go-guru-command ,(concat go-projectile-tools-path "/bin/guru"))))
 
+(req-package go-snippets
+  :require go-mode yasnippet)
+
 (req-package gotest
   :require go-mode
   :bind
@@ -456,7 +470,10 @@
         ("C-c C-t t" . go-test-current-test)
         ("C-c C-t f" . go-test-current-file)
         ("C-c C-t p" . go-test-current-project)
-        ("C-c C-t c" . go-test-current-coverage))
+        ("C-c C-t c" . go-test-current-coverage)
+        ("C-c C-b b" . go-test-current-benchmark)
+        ("C-c C-b f" . go-test-current-file-benchmarks)
+        ("C-c C-b p" . go-test-current-project-benchmarks))
   :config
   (custom-set-variables
    '(go-test-verbose t)))
@@ -466,7 +483,7 @@
 
 (defun go-mode/company-backends ()
   (let ((backends (make-local-variable 'company-backends)))
-    (set backends '((company-go :with company-yasnippet)))))
+    (set backends '((company-go)))))
 
 (defun go-mode/prettify-symbols ()
   (add-to-list 'prettify-symbols-alist'("<-" . ?⟵))
