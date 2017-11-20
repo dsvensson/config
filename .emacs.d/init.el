@@ -161,6 +161,16 @@
   :config
   (global-prettify-symbols-mode))
 
+(req-package rainbow-mode
+  :init
+  (add-hook 'prog-mode-hook #'rainbow-mode)
+  (custom-set-variables
+   '(rainbow-x-colors nil)
+   '(rainbow-latex-colors nil)
+   '(rainbow-ansi-colors nil)
+   '(rainbow-html-colors nil)
+   '(rainbow-r-colors)))
+
 (req-package uniquify
   :config
   (custom-set-variables
