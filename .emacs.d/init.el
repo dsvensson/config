@@ -346,6 +346,9 @@
 (req-package markdown-mode
   :mode ("\\.md$" "\\.mdown$" "\\.markdown$"))
 
+(req-package yaml-mode
+  :mode ("\\.yml$" "\\.yaml$"))
+
 (req-package cider
   :require clojure-mode)
 
