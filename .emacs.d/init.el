@@ -349,6 +349,9 @@
 (req-package yaml-mode
   :mode ("\\.yml$" "\\.yaml$"))
 
+(req-package dockerfile-mode
+  :mode ("Dockerfile$"))
+
 (req-package cider
   :require clojure-mode)
 
