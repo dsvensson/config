@@ -162,6 +162,7 @@
   (global-prettify-symbols-mode))
 
 (req-package rainbow-mode
+  :diminish rainbow-mode
   :init
   (add-hook 'prog-mode-hook #'rainbow-mode)
   (custom-set-variables
@@ -316,6 +317,39 @@
   (sp-use-paredit-bindings)
   :diminish smartparens-mode)
 
+;; (req-package shm
+;;   :require haskell-mode
+;;   :init
+;;   (add-hook 'haskell-mode-hook 'structured-haskell-mode)
+;;   :config
+;;   (custom-set-variables
+;;    '(shm-program-name "~/.cabal/bin/structured-haskell-mode")))
+
+(req-package intero
+  :require haskell-mode
+  :init
+  (add-hook 'haskell-mode-hook 'intero-mode))
+
+(req-package hasky-stack
+  :require haskell-mode)
+
+(req-package hasky-extensions
+  :require haskell-mode)
+
+;; checkout hdevtools, probably not ghc-imported-from, maybe hasky-extensions
+;; cabal install happy hasktags stylish-haskell present ghc-mod hlint hoogle structured-haskell-mode hindent
+(req-package haskell-mode
+  :init
+  (add-hook 'haskell-mode-hook 'haskell-doc-mode)
+  :config
+  (custom-set-variables
+   '(haskell-stylish-on-save t)
+   '(flycheck-haskell-hlint-executable "~/.cabal/bin/hlint")
+   '(haskell-mode-stylish-haskell-path "~/.cabal/bin/stylish-haskell")
+   '(haskell-font-lock-quasi-quote-modes '(("groundhog" . yaml-mode)
+                                           ("persistLowerCase" . haskell-mode)
+                                           ("aesonQQ" . js-mode)))))
+
 (req-package elpy
   :require python
   :init
@@ -348,6 +382,12 @@
 
 (req-package yaml-mode
   :mode ("\\.yml$" "\\.yaml$"))
+
+(req-package json-mode
+  :mode ("\\.json$"))
+
+(req-package toml-mode
+  :mode ("\\.toml$"))
 
 (req-package dockerfile-mode
   :mode ("Dockerfile$"))
