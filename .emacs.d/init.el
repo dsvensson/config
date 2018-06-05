@@ -601,6 +601,36 @@
 (req-package groovy-mode
   :mode ("\\.groovy$" "\\.gradle$"))
 
+(req-package ng2-mode
+  :require typescript-mode)
+
+(req-package web-mode
+  :mode (("\\.ts$" . web-mode)
+         ("\\.tsx$" . web-mode)
+         ("\\.css$" . web-mode))
+  :diminish tide-mode)
+
+(defun tide/setup ()
+  (when (string-equal "tsx" (file-name-extension buffer-file-name))
+    (tide-setup)))
+
+(req-package tide
+  :mode (("\\.ts$" . typescript-mode)
+         ("\\.tsx$" . typescript-mode))
+  :require typescript-mode web-mode
+  :diminish tide-mode
+  :init
+  (add-hook 'web-mode-hook 'tide/setup)
+  (add-hook 'before-save-hook 'tide-format-before-save)
+  :config
+  (custom-set-variables
+   '(tide-completion-enable-autoimport-suggestions t)))
+
+(req-package typescript-mode
+  :config
+  (custom-set-variables
+   '(typescript-indent-level 2)))
+
 (req-package windmove
   :bind (("C-s-<left>"  . windmove-left)
          ("C-s-<right>" . windmove-right)
