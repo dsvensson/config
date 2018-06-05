@@ -92,8 +92,8 @@
     (set-face-background 'whitespace-tab color-background-darker)
     (set-face-foreground 'idle-highlight color-orange)
     (set-face-background 'idle-highlight color-background)
-    (set-face-foreground 'show-paren-match-face color-orange)
-    (set-face-background 'show-paren-match-face color-background)))
+    (set-face-foreground 'show-paren-match color-orange)
+    (set-face-background 'show-paren-match color-background)))
 
 ;; clickable http:// links
 (if (functionp 'goto-address-mode)
