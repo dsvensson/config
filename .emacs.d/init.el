@@ -568,12 +568,6 @@
   :require rust-mode
   :init
   (add-hook 'rust-mode-hook #'racer-mode)
-  :config
-  ;; source installed via: rustup component add rust-src
-  (let* ((sysroot (string-trim (shell-command-to-string "rustc --print sysroot")))
-         (srcpath (concat sysroot "/lib/rustlib/src/rust/src")))
-    (custom-set-variables
-     `(racer-rust-src-path ,srcpath)))
   :diminish racer-mode)
 
 (req-package cargo
