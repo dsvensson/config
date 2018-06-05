@@ -392,6 +392,11 @@
 (req-package dockerfile-mode
   :mode ("Dockerfile$"))
 
+(req-package docker-compose-mode
+  :mode ("docker-compose.yml$"))
+
+(req-package docker)
+
 (req-package cider
   :require clojure-mode)
 
