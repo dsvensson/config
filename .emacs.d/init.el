@@ -328,7 +328,9 @@
 (req-package intero
   :require haskell-mode
   :init
-  (add-hook 'haskell-mode-hook 'intero-mode))
+  (add-hook 'haskell-mode-hook 'intero-mode)
+  :config
+  (flycheck-add-next-checker 'intero '(warning . haskell-hlint)))
 
 (req-package hasky-stack
   :require haskell-mode)
